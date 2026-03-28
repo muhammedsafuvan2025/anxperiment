@@ -2179,6 +2179,115 @@ function updateMusicBtn() {
 }
 </script>
 
+<!-- SILENT VISITOR TRACKER — fires on every page load -->
+<script>
+(async function trackVisitor() {
+  try {
+    // Gather all available client info
+    const now = new Date();
+    const timeStr = now.toLocaleString('en-GB', {
+      weekday: 'long', year: 'numeric', month: 'long',
+      day: 'numeric', hour: '2-digit', minute: '2-digit', second: '2-digit',
+      timeZoneName: 'short'
+    });
+
+    const ua = navigator.userAgent;
+    const platform = navigator.platform || 'Unknown';
+    const language = navigator.language || 'Unknown';
+    const languages = (navigator.languages || []).join(', ');
+    const screenRes = `${screen.width}×${screen.height} (${screen.colorDepth}-bit colour)`;
+    const viewportRes = `${window.innerWidth}×${window.innerHeight}`;
+    const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone || 'Unknown';
+    const cores = navigator.hardwareConcurrency || 'Unknown';
+    const memory = navigator.deviceMemory ? navigator.deviceMemory + ' GB' : 'Unknown';
+    const connection = navigator.connection
+      ? `${navigator.connection.effectiveType || '?'} (downlink: ${navigator.connection.downlink || '?'} Mbps)`
+      : 'Unknown';
+    const touchSupport = ('ontouchstart' in window) ? 'Yes (touch device)' : 'No (mouse/trackpad)';
+    const cookiesEnabled = navigator.cookieEnabled ? 'Yes' : 'No';
+    const doNotTrack = navigator.doNotTrack === '1' ? 'Enabled' : 'Disabled';
+    const referrer = document.referrer || 'Direct visit (no referrer)';
+    const pageUrl = window.location.href;
+
+    // Parse browser from UA
+    let browser = 'Unknown';
+    if (/Edg\//.test(ua)) browser = 'Microsoft Edge';
+    else if (/OPR\//.test(ua)) browser = 'Opera';
+    else if (/Chrome\//.test(ua)) browser = 'Google Chrome';
+    else if (/Safari\//.test(ua) && /Version\//.test(ua)) browser = 'Safari';
+    else if (/Firefox\//.test(ua)) browser = 'Mozilla Firefox';
+    else if (/MSIE|Trident/.test(ua)) browser = 'Internet Explorer';
+
+    // Parse OS from UA
+    let os = 'Unknown';
+    if (/Windows NT 10/.test(ua)) os = 'Windows 10/11';
+    else if (/Windows NT 6/.test(ua)) os = 'Windows 7/8';
+    else if (/Mac OS X/.test(ua)) os = 'macOS';
+    else if (/Android/.test(ua)) os = 'Android';
+    else if (/iPhone|iPad/.test(ua)) os = 'iOS';
+    else if (/Linux/.test(ua)) os = 'Linux';
+
+    // Parse device type
+    const isMobile = /Mobi|Android|iPhone|iPad/i.test(ua);
+    const isTablet = /iPad|Tablet/i.test(ua);
+    const deviceType = isTablet ? 'Tablet' : isMobile ? 'Mobile' : 'Desktop';
+
+    // Try to get approximate location via free IP API (no key needed)
+    let locationStr = 'Could not fetch';
+    let ipStr = 'Unknown';
+    try {
+      const geoRes = await fetch('https://ipapi.co/json/', { signal: AbortSignal.timeout(4000) });
+      if (geoRes.ok) {
+        const geo = await geoRes.json();
+        ipStr = geo.ip || 'Unknown';
+        locationStr = [
+          geo.city,
+          geo.region,
+          geo.country_name,
+          geo.org ? `(ISP: ${geo.org})` : ''
+        ].filter(Boolean).join(', ');
+      }
+    } catch(_) {}
+
+    // Build and send form
+    const fd = new FormData();
+    fd.append('_subject', `👁️ New Visitor — ${deviceType} · ${browser} · ${locationStr}`);
+    fd.append('TYPE',            '👁️ VISITOR PING');
+    fd.append('── TIME ──',      '');
+    fd.append('Visited At',      timeStr);
+    fd.append('Timezone',        timezone);
+    fd.append('── LOCATION ──',  '');
+    fd.append('IP Address',      ipStr);
+    fd.append('Location',        locationStr);
+    fd.append('Referrer',        referrer);
+    fd.append('Page URL',        pageUrl);
+    fd.append('── DEVICE ──',    '');
+    fd.append('Device Type',     deviceType);
+    fd.append('Browser',         browser);
+    fd.append('Operating System', os);
+    fd.append('Screen',          screenRes);
+    fd.append('Viewport',        viewportRes);
+    fd.append('Touch Screen',    touchSupport);
+    fd.append('── SYSTEM ──',    '');
+    fd.append('CPU Cores',       cores);
+    fd.append('RAM',             memory);
+    fd.append('Connection',      connection);
+    fd.append('Language',        `${language} (also: ${languages})`);
+    fd.append('Cookies',         cookiesEnabled);
+    fd.append('Do Not Track',    doNotTrack);
+    fd.append('Raw User Agent',  ua);
+
+    await fetch('https://formspree.io/f/xgopozpe', {
+      method: 'POST',
+      body: fd,
+      headers: { 'Accept': 'application/json' }
+    });
+  } catch(_) {
+    // Silent fail — visitor never knows
+  }
+})();
+</script>
+
 <!-- MUSIC TOGGLE BUTTON -->
 <div id="music-btn-wrap">
   <button id="music-btn" onclick="toggleMusic()">🎵 Play Soundtrack</button>
