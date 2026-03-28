@@ -1,0 +1,2263 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Do You Really Know Saf? 👀</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=DM+Sans:wght@300;400;500;600&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet"/>
+<style>
+  :root {
+    --bg: #080810;
+    --card: #10101c;
+    --card2: #181828;
+    --gold: #f0c040;
+    --pink: #ff6b9d;
+    --cyan: #00d4ff;
+    --purple: #a855f7;
+    --green: #22d3a0;
+    --red: #ff4444;
+    --text: #f0f0f8;
+    --muted: #7a7a9a;
+    --border: rgba(255,255,255,0.07);
+    --radius: 18px;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { background: var(--bg); color: var(--text); font-family: 'DM Sans', sans-serif; min-height: 100vh; overflow-x: hidden; }
+  body::before {
+    content: ''; position: fixed; inset: 0;
+    background:
+      radial-gradient(ellipse 70% 50% at 10% 10%, rgba(168,85,247,0.07) 0%, transparent 60%),
+      radial-gradient(ellipse 60% 40% at 90% 90%, rgba(0,212,255,0.05) 0%, transparent 60%),
+      radial-gradient(ellipse 40% 60% at 50% 40%, rgba(240,192,64,0.03) 0%, transparent 70%);
+    pointer-events: none; z-index: 0;
+  }
+
+  /* NAV */
+  nav {
+    position: sticky; top: 0; z-index: 100;
+    display: flex; justify-content: center; gap: 6px; padding: 12px 16px;
+    background: rgba(8,8,16,0.9); backdrop-filter: blur(24px);
+    border-bottom: 1px solid var(--border);
+  }
+  .nav-btn {
+    padding: 8px 18px; border-radius: 50px; border: 1px solid var(--border);
+    background: transparent; color: var(--muted); font-family: 'DM Sans', sans-serif;
+    font-size: 13px; font-weight: 500; cursor: pointer; transition: all 0.2s;
+  }
+  .nav-btn:hover, .nav-btn.active { background: var(--gold); color: #000; border-color: var(--gold); font-weight: 700; }
+
+  /* SECTIONS */
+  .section { display: none; min-height: 100vh; padding: 40px 20px 100px; position: relative; z-index: 1; }
+  .section.active { display: block; }
+  #home { display: none; align-items: center; justify-content: center; text-align: center; flex-direction: column; padding: 70px 20px; }
+  #home.active { display: flex; }
+
+  /* HOME */
+  .hero-emoji { font-size: 72px; animation: float 3s ease-in-out infinite; margin-bottom: 20px; }
+  @keyframes float { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-14px)} }
+  .hero-title {
+    font-family: 'Playfair Display', serif; font-size: clamp(34px, 6vw, 68px); font-weight: 900; line-height: 1.1;
+    background: linear-gradient(135deg, var(--gold) 0%, var(--pink) 50%, var(--cyan) 100%);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; margin-bottom: 14px;
+  }
+  .hero-sub { font-size: 17px; color: var(--muted); max-width: 460px; line-height: 1.7; margin-bottom: 40px; }
+  .hero-cards { display: flex; gap: 14px; flex-wrap: wrap; justify-content: center; }
+  .hero-card {
+    background: var(--card); border: 1px solid var(--border); border-radius: var(--radius);
+    padding: 24px 26px; cursor: pointer; transition: all 0.3s; text-align: left;
+    max-width: 210px; position: relative; overflow: hidden;
+  }
+  .hero-card::before { content:''; position:absolute; inset:0; opacity:0; transition:opacity 0.3s; border-radius:var(--radius); }
+  .hero-card.q::before { background: linear-gradient(135deg, rgba(240,192,64,0.12), transparent); }
+  .hero-card.l::before { background: linear-gradient(135deg, rgba(255,107,157,0.12), transparent); }
+  .hero-card:hover { transform: translateY(-5px); border-color: rgba(255,255,255,0.14); }
+  .hero-card:hover::before { opacity: 1; }
+  .hero-card .card-icon { font-size: 34px; margin-bottom: 10px; }
+  .hero-card h3 { font-family: 'Playfair Display', serif; font-size: 19px; margin-bottom: 6px; }
+  .hero-card p { font-size: 13px; color: var(--muted); line-height: 1.5; }
+
+  /* QUIZ */
+  .quiz-wrap { max-width: 680px; margin: 0 auto; }
+  .quiz-header { text-align: center; margin-bottom: 36px; }
+  .quiz-header h2 {
+    font-family: 'Playfair Display', serif; font-size: clamp(26px, 4vw, 44px); font-weight: 900; margin-bottom: 8px;
+    background: linear-gradient(135deg, var(--gold), var(--pink));
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+  }
+  .quiz-header p { color: var(--muted); font-size: 14px; }
+  .name-step { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 36px; margin-bottom: 24px; text-align: center; }
+  .name-step h3 { font-family: 'Playfair Display', serif; font-size: 22px; margin-bottom: 18px; }
+  .name-step .emoji { font-size: 48px; margin-bottom: 12px; display: block; }
+  input[type="text"] {
+    width: 100%; padding: 13px 16px; background: rgba(255,255,255,0.05);
+    border: 1px solid var(--border); border-radius: 12px; color: var(--text);
+    font-family: 'DM Sans', sans-serif; font-size: 15px; outline: none; transition: border-color 0.2s;
+  }
+  input[type="text"]:focus { border-color: var(--gold); }
+  .progress-label { text-align: center; font-size: 11px; color: var(--muted); font-family: 'Space Mono', monospace; margin-bottom: 10px; letter-spacing: 1px; }
+  .progress-bar-wrap { background: rgba(255,255,255,0.06); border-radius: 50px; height: 5px; margin-bottom: 26px; overflow: hidden; }
+  .progress-bar-fill { height: 100%; background: linear-gradient(90deg, var(--gold), var(--pink)); border-radius: 50px; transition: width 0.5s ease; }
+  .q-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 28px; margin-bottom: 18px; animation: slideIn 0.35s ease; }
+  @keyframes slideIn { from{opacity:0;transform:translateX(28px)} to{opacity:1;transform:translateX(0)} }
+  .q-num { font-family: 'Space Mono', monospace; font-size: 10px; color: var(--gold); text-transform: uppercase; letter-spacing: 2px; margin-bottom: 10px; }
+  .q-emoji { font-size: 44px; margin-bottom: 14px; display: block; }
+  .q-text { font-family: 'Playfair Display', serif; font-size: clamp(17px, 2.5vw, 22px); font-weight: 700; margin-bottom: 6px; line-height: 1.35; }
+  .q-hint { font-size: 12px; color: var(--muted); margin-bottom: 20px; font-style: italic; }
+  .options-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 9px; }
+  .options-grid.single { grid-template-columns: 1fr; }
+  .opt-btn {
+    padding: 13px 14px; background: rgba(255,255,255,0.04); border: 1px solid var(--border);
+    border-radius: 12px; color: var(--text); font-family: 'DM Sans', sans-serif;
+    font-size: 14px; font-weight: 500; cursor: pointer; transition: all 0.2s;
+    text-align: left; display: flex; align-items: center; gap: 9px;
+  }
+  .opt-btn:hover { background: rgba(240,192,64,0.08); border-color: rgba(240,192,64,0.4); }
+  .opt-btn.selected { background: rgba(240,192,64,0.14); border-color: var(--gold); color: var(--gold); font-weight: 600; }
+  .text-q-wrap textarea {
+    width: 100%; padding: 13px 16px; background: rgba(255,255,255,0.05);
+    border: 1px solid var(--border); border-radius: 12px; color: var(--text);
+    font-family: 'DM Sans', sans-serif; font-size: 14px; resize: none; outline: none;
+    min-height: 88px; transition: border-color 0.2s;
+  }
+  .text-q-wrap textarea:focus { border-color: var(--cyan); }
+  .cta-btn {
+    display: block; width: 100%; padding: 15px;
+    background: linear-gradient(135deg, var(--gold), var(--pink));
+    border: none; border-radius: 14px; color: #000; font-family: 'DM Sans', sans-serif;
+    font-size: 16px; font-weight: 700; cursor: pointer; transition: all 0.25s; margin-top: 14px;
+  }
+  .cta-btn:hover { transform: translateY(-2px); box-shadow: 0 10px 28px rgba(240,192,64,0.28); }
+  .cta-btn:disabled { opacity: 0.35; cursor: not-allowed; transform: none; box-shadow: none; }
+
+  /* SCORE */
+  .score-screen { text-align: center; padding: 16px; }
+  .score-ring { width: 150px; height: 150px; margin: 0 auto 24px; position: relative; }
+  .score-ring svg { transform: rotate(-90deg); }
+  .score-ring .ring-bg { fill: none; stroke: rgba(255,255,255,0.07); stroke-width: 9; }
+  .score-ring .ring-fill { fill: none; stroke-width: 9; stroke-linecap: round; transition: stroke-dashoffset 1.6s ease; }
+  .score-ring .ring-text { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+  .score-ring .ring-text .num { font-family: 'Playfair Display', serif; font-size: 34px; font-weight: 900; background: linear-gradient(135deg, var(--gold), var(--pink)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+  .score-ring .ring-text .of { font-size: 11px; color: var(--muted); }
+  .score-label { font-family: 'Playfair Display', serif; font-size: 26px; font-weight: 900; margin-bottom: 10px; }
+  .score-msg { color: var(--muted); font-size: 14px; line-height: 1.7; margin-bottom: 26px; max-width: 420px; margin-left: auto; margin-right: auto; }
+  .answers-review { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 22px; text-align: left; margin-bottom: 18px; }
+  .answers-review h4 { font-family: 'Playfair Display', serif; font-size: 17px; margin-bottom: 14px; color: var(--gold); }
+  .review-item { padding: 10px 0; border-bottom: 1px solid var(--border); }
+  .review-item:last-child { border-bottom: none; }
+  .review-item .r-q { font-size: 12px; color: var(--muted); margin-bottom: 3px; }
+  .review-item .r-a { font-size: 14px; font-weight: 500; }
+  .review-item .r-correct { color: var(--green); }
+  .review-item .r-wrong { color: var(--red); }
+  .review-item .r-correct-ans { font-size: 11px; color: var(--muted); margin-top: 2px; }
+
+  /* LOVE */
+  .love-wrap { max-width: 600px; margin: 0 auto; }
+  .love-header { text-align: center; margin-bottom: 36px; }
+  .love-header h2 {
+    font-family: 'Playfair Display', serif; font-size: clamp(26px, 4vw, 44px); font-weight: 900; margin-bottom: 8px;
+    background: linear-gradient(135deg, var(--pink), var(--purple));
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+  }
+  .love-header p { color: var(--muted); font-size: 14px; }
+  .love-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 32px; margin-bottom: 18px; }
+  .names-row { display: grid; grid-template-columns: 1fr auto 1fr; gap: 14px; align-items: center; margin-bottom: 22px; }
+  .names-row .heart-sep { font-size: 26px; text-align: center; animation: heartbeat 1.2s ease-in-out infinite; }
+  @keyframes heartbeat { 0%,100%{transform:scale(1)} 50%{transform:scale(1.25)} }
+  .name-field label { display: block; font-size: 11px; color: var(--muted); font-family: 'Space Mono', monospace; text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 7px; }
+  .love-cta {
+    background: linear-gradient(135deg, var(--pink), var(--purple));
+    border: none; border-radius: 14px; padding: 15px; width: 100%;
+    color: #fff; font-family: 'DM Sans', sans-serif; font-size: 16px; font-weight: 700;
+    cursor: pointer; transition: all 0.25s;
+  }
+  .love-cta:hover { transform: translateY(-2px); box-shadow: 0 10px 28px rgba(255,107,157,0.32); }
+  .love-result { display: none; text-align: center; padding: 36px 16px; }
+  .love-result.show { display: block; animation: slideIn 0.45s ease; }
+  .heart-explode { font-size: 68px; animation: pop 0.5s ease; display: block; margin-bottom: 18px; }
+  @keyframes pop { 0%{transform:scale(0);opacity:0} 60%{transform:scale(1.3)} 100%{transform:scale(1);opacity:1} }
+  .compat-score {
+    font-family: 'Playfair Display', serif; font-size: 70px; font-weight: 900; line-height: 1;
+    background: linear-gradient(135deg, var(--pink), var(--purple));
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; margin-bottom: 6px;
+  }
+  .compat-label { font-size: 20px; font-weight: 700; margin-bottom: 14px; }
+  .compat-bar-wrap { background: rgba(255,255,255,0.06); border-radius: 50px; height: 10px; overflow: hidden; max-width: 340px; margin: 0 auto 24px; }
+  .compat-bar-fill { height: 100%; background: linear-gradient(90deg, var(--pink), var(--purple)); border-radius: 50px; transition: width 1.6s ease; }
+  .compat-msg { color: var(--muted); font-size: 14px; line-height: 1.7; max-width: 380px; margin: 0 auto 26px; }
+  .kiss-animation { font-size: 58px; display: flex; align-items: center; justify-content: center; gap: 14px; margin: 16px 0; }
+  .kiss-left { animation: kissLeft 1.4s ease-in-out infinite; }
+  .kiss-right { animation: kissRight 1.4s ease-in-out infinite; }
+  @keyframes kissLeft { 0%,100%{transform:translateX(0)} 50%{transform:translateX(10px)} }
+  @keyframes kissRight { 0%,100%{transform:translateX(0)} 50%{transform:translateX(-10px)} }
+  .compat-breakdown { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px; text-align: left; max-width: 440px; margin: 0 auto 24px; }
+  .compat-breakdown h4 { font-family: 'Playfair Display', serif; font-size: 16px; color: var(--pink); margin-bottom: 14px; }
+  .breakdown-item { margin-bottom: 12px; }
+  .breakdown-item .b-label { font-size: 12px; color: var(--muted); font-family: 'Space Mono', monospace; margin-bottom: 4px; display: flex; justify-content: space-between; }
+  .b-bar-wrap { background: rgba(255,255,255,0.06); border-radius: 50px; height: 6px; overflow: hidden; }
+  .b-bar-fill { height: 100%; border-radius: 50px; transition: width 1.8s ease; }
+
+  /* FX */
+  .sparkle { position: fixed; pointer-events: none; font-size: 18px; animation: sparkleAnim 1s ease forwards; z-index: 999; }
+  @keyframes sparkleAnim { 0%{opacity:1;transform:translateY(0) scale(1)} 100%{opacity:0;transform:translateY(-55px) scale(0.3)} }
+  .confetti-container { position: fixed; inset: 0; pointer-events: none; z-index: 998; overflow: hidden; }
+  .confetti-piece { position: absolute; width: 9px; height: 9px; border-radius: 2px; animation: confettiFall 2.5s ease forwards; }
+  @keyframes confettiFall { 0%{transform:translateY(-20px) rotate(0deg);opacity:1} 100%{transform:translateY(110vh) rotate(720deg);opacity:0} }
+
+  /* ─── COSMOS SECTION ─── */
+  #cosmos { padding: 0 0 120px; }
+  .cosmos-wrap { max-width: 900px; margin: 0 auto; padding: 0 16px; }
+
+  .cosmos-hero {
+    position: relative; height: 340px;
+    display: flex; align-items: center; justify-content: center;
+    overflow: hidden; margin-bottom: 32px;
+  }
+  #cosmos-bg-canvas { position: absolute; inset: 0; width: 100%; height: 100%; }
+  .cosmos-hero-content { position: relative; z-index: 2; text-align: center; padding: 20px; }
+  .cosmos-tag { font-family: 'Space Mono', monospace; font-size: 10px; letter-spacing: 4px; color: var(--gold); text-transform: uppercase; margin-bottom: 14px; }
+  .cosmos-hero-title { font-family: 'Playfair Display', serif; font-size: clamp(40px,7vw,72px); font-weight: 900; color: #fff; margin-bottom: 12px; text-shadow: 0 0 40px rgba(240,192,64,0.3); }
+  .cosmos-hero-sub { color: rgba(255,255,255,0.5); font-size: 15px; max-width: 480px; line-height: 1.7; }
+
+  /* Tabs */
+  .cosmos-tabs { display: flex; gap: 8px; margin-bottom: 28px; flex-wrap: wrap; }
+  .ctab { padding: 10px 20px; border-radius: 50px; border: 1px solid var(--border); background: transparent; color: var(--muted); font-family: 'DM Sans', sans-serif; font-size: 13px; font-weight: 500; cursor: pointer; transition: all 0.2s; }
+  .ctab:hover { border-color: rgba(240,192,64,0.3); color: var(--gold); }
+  .ctab.active { background: var(--gold); color: #000; border-color: var(--gold); font-weight: 700; }
+  .ctab-content { display: none; animation: slideIn 0.4s ease; }
+  .ctab-content.active { display: block; }
+
+  /* Scale visualizer */
+  .scale-viz-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 28px; margin-bottom: 24px; }
+  .scale-title { font-family: 'Playfair Display', serif; font-size: 22px; font-weight: 900; margin-bottom: 4px; }
+  .scale-subtitle { color: var(--muted); font-size: 13px; margin-bottom: 22px; }
+  .scale-slider-wrap input[type=range] { width: 100%; accent-color: var(--gold); cursor: pointer; height: 6px; margin-bottom: 24px; }
+  .scale-display { text-align: center; padding: 16px 0; }
+  .scale-name { font-family: 'Playfair Display', serif; font-size: 24px; font-weight: 700; margin-bottom: 4px; }
+  .scale-size { font-family: 'Space Mono', monospace; font-size: 13px; color: var(--gold); margin-bottom: 20px; }
+  .scale-orb-wrap { display: flex; align-items: center; justify-content: center; gap: 20px; margin-bottom: 18px; min-height: 120px; }
+  .scale-orb { border-radius: 50%; transition: all 0.6s cubic-bezier(0.34,1.56,0.64,1); flex-shrink: 0; }
+  .scale-compare { font-size: 13px; color: var(--muted); max-width: 260px; line-height: 1.5; text-align: left; }
+  .scale-fact { font-size: 14px; color: rgba(255,255,255,0.6); max-width: 500px; margin: 0 auto; line-height: 1.7; font-style: italic; }
+  .scale-markers { display: flex; justify-content: space-between; font-family: 'Space Mono', monospace; font-size: 8px; color: var(--muted); margin-top: 6px; flex-wrap: wrap; gap: 4px; }
+
+  /* Cosmos cards grid */
+  .cosmos-cards-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+  @media(max-width:600px) { .cosmos-cards-grid { grid-template-columns: 1fr; } }
+  .cosmos-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 22px; transition: transform 0.2s, border-color 0.2s; }
+  .cosmos-card:hover { transform: translateY(-3px); border-color: rgba(240,192,64,0.2); }
+  .cc-icon { font-size: 32px; margin-bottom: 10px; }
+  .cc-num { font-family: 'Playfair Display', serif; font-size: 26px; font-weight: 900; color: var(--gold); margin-bottom: 4px; }
+  .cc-label { font-size: 13px; color: var(--muted); margin-bottom: 12px; font-family: 'Space Mono', monospace; font-size: 11px; }
+  .cc-fact { font-size: 13px; color: rgba(255,255,255,0.55); line-height: 1.7; }
+
+  /* Timeline */
+  .timeline-header { text-align: center; margin-bottom: 40px; }
+  .timeline-title { font-family: 'Playfair Display', serif; font-size: clamp(24px,4vw,38px); font-weight: 900; margin-bottom: 8px; }
+  .timeline-sub { color: var(--muted); font-size: 14px; }
+  .cosmos-section-title { font-family: 'Playfair Display', serif; font-size: clamp(22px,3.5vw,34px); font-weight: 900; margin-bottom: 8px; }
+  .cosmos-section-sub { color: var(--muted); font-size: 14px; }
+  .science-header, .space-header { text-align: center; margin-bottom: 36px; }
+
+  .timeline { position: relative; padding-left: 20px; }
+  .timeline::before { content:''; position: absolute; left: 80px; top: 0; bottom: 0; width: 1px; background: linear-gradient(to bottom, transparent, var(--border) 10%, var(--border) 90%, transparent); }
+  .tl-item { display: grid; grid-template-columns: 80px 20px 1fr; gap: 0 16px; margin-bottom: 36px; align-items: start; }
+  .tl-year { font-family: 'Space Mono', monospace; font-size: 10px; color: var(--muted); text-align: right; padding-top: 14px; line-height: 1.4; }
+  .tl-dot { width: 12px; height: 12px; border-radius: 50%; border: 2px solid var(--gold); background: var(--bg); margin-top: 12px; position: relative; z-index: 1; flex-shrink: 0; transition: background 0.3s; }
+  .tl-item:hover .tl-dot { background: var(--gold); }
+  .tl-card { background: var(--card); border: 1px solid var(--border); border-radius: 14px; padding: 18px 20px; transition: border-color 0.2s; }
+  .tl-item:hover .tl-card { border-color: rgba(240,192,64,0.25); }
+  .tl-tag { font-family: 'Space Mono', monospace; font-size: 9px; color: var(--gold); letter-spacing: 2px; text-transform: uppercase; margin-bottom: 6px; }
+  .tl-event { font-family: 'Playfair Display', serif; font-size: 18px; font-weight: 700; margin-bottom: 8px; }
+  .tl-desc { font-size: 13px; color: rgba(255,255,255,0.55); line-height: 1.7; }
+  @media(max-width:500px) { .timeline::before { left: 60px; } .tl-item { grid-template-columns: 60px 16px 1fr; } }
+
+  /* Flip cards */
+  .fact-cards { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+  @media(max-width:600px) { .fact-cards { grid-template-columns: 1fr; } }
+  .fact-card { height: 180px; cursor: pointer; perspective: 1000px; }
+  .fact-front, .fact-back { position: absolute; inset: 0; border-radius: 14px; padding: 20px; backface-visibility: hidden; transition: transform 0.6s cubic-bezier(0.4,0,0.2,1); display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; }
+  .fact-card { position: relative; }
+  .fact-front { background: var(--card); border: 1px solid var(--border); transform: rotateY(0deg); }
+  .fact-back { background: linear-gradient(135deg, var(--card2), #1a1a30); border: 1px solid rgba(240,192,64,0.2); transform: rotateY(180deg); justify-content: center; }
+  .fact-card.flipped .fact-front { transform: rotateY(-180deg); }
+  .fact-card.flipped .fact-back { transform: rotateY(0deg); }
+  .fact-icon { font-size: 30px; margin-bottom: 10px; }
+  .fact-q { font-family: 'Playfair Display', serif; font-size: 15px; font-weight: 700; line-height: 1.35; margin-bottom: 10px; }
+  .fact-tap { font-family: 'Space Mono', monospace; font-size: 9px; color: var(--gold); letter-spacing: 2px; text-transform: uppercase; }
+  .fact-detail { font-size: 12px; color: rgba(255,255,255,0.7); line-height: 1.7; }
+
+  /* Space tab */
+  .space-grid { display: flex; flex-direction: column; gap: 20px; }
+  .space-big-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 28px; display: grid; grid-template-columns: 340px 1fr; gap: 28px; align-items: start; }
+  @media(max-width:700px) { .space-big-card { grid-template-columns: 1fr; } #blackhole-canvas { width: 100% !important; height: 220px !important; } }
+  .space-big-tag { font-family: 'Space Mono', monospace; font-size: 10px; color: var(--cyan); letter-spacing: 3px; margin-bottom: 10px; }
+  .space-big-content h4 { font-family: 'Playfair Display', serif; font-size: 22px; font-weight: 900; margin-bottom: 12px; }
+  .space-big-content p { font-size: 13px; color: rgba(255,255,255,0.6); line-height: 1.8; }
+  .space-fact-row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+  @media(max-width:600px) { .space-fact-row { grid-template-columns: 1fr; } }
+  .sf-item { background: var(--card); border: 1px solid var(--border); border-radius: 14px; padding: 20px; transition: transform 0.2s; }
+  .sf-item:hover { transform: translateY(-3px); }
+  .sf-icon { font-size: 28px; margin-bottom: 10px; }
+  .sf-title { font-family: 'Playfair Display', serif; font-size: 16px; font-weight: 700; margin-bottom: 8px; }
+  .sf-desc { font-size: 12px; color: rgba(255,255,255,0.5); line-height: 1.7; }
+
+  /* Fermi Paradox card */
+  .fermi-card { background: linear-gradient(135deg, #0d0d1a, #1a0d2e); border: 1px solid rgba(168,85,247,0.2); border-radius: var(--radius); padding: 32px; }
+  .fermi-title { font-family: 'Playfair Display', serif; font-size: 26px; font-weight: 900; margin-bottom: 4px; }
+  .fermi-sub { font-family: 'Space Mono', monospace; font-size: 10px; color: var(--purple); letter-spacing: 2px; text-transform: uppercase; margin-bottom: 22px; }
+  .fermi-body p { font-size: 14px; color: rgba(255,255,255,0.65); line-height: 1.8; margin-bottom: 14px; }
+  .fermi-body strong { color: var(--pink); }
+  .fermi-body em { color: var(--cyan); font-style: normal; }
+  .fermi-options { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 20px; }
+  .fo { padding: 8px 16px; background: rgba(168,85,247,0.1); border: 1px solid rgba(168,85,247,0.2); border-radius: 50px; font-size: 13px; font-weight: 500; }
+
+  @media (max-width: 500px) {
+    .options-grid { grid-template-columns: 1fr; }
+    .names-row { grid-template-columns: 1fr; }
+    .names-row .heart-sep { display: none; }
+    .hero-cards { flex-direction: column; align-items: center; }
+  }
+  #intro-screen {
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+    background: #000;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    cursor: pointer;
+  }
+
+  /* Film grain overlay */
+  #intro-screen::before {
+    content: '';
+    position: absolute;
+    inset: -50%;
+    width: 200%;
+    height: 200%;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.08'/%3E%3C/svg%3E");
+    opacity: 0.35;
+    animation: grainShift 0.15s steps(1) infinite;
+    pointer-events: none;
+    z-index: 1;
+  }
+
+  @keyframes grainShift {
+    0%   { transform: translate(0,0); }
+    10%  { transform: translate(-2%,-3%); }
+    20%  { transform: translate(3%,2%); }
+    30%  { transform: translate(-1%,4%); }
+    40%  { transform: translate(4%,-1%); }
+    50%  { transform: translate(-3%,3%); }
+    60%  { transform: translate(2%,-4%); }
+    70%  { transform: translate(-4%,1%); }
+    80%  { transform: translate(1%,3%); }
+    90%  { transform: translate(3%,-2%); }
+    100% { transform: translate(-2%,4%); }
+  }
+
+  /* Letterbox bars */
+  .intro-bar-top,
+  .intro-bar-bottom {
+    position: absolute;
+    left: 0; right: 0;
+    height: 12vh;
+    background: #000;
+    z-index: 3;
+    transition: transform 0.9s cubic-bezier(0.76, 0, 0.24, 1);
+  }
+  .intro-bar-top { top: 0; transform: translateY(0); }
+  .intro-bar-bottom { bottom: 0; transform: translateY(0); }
+  #intro-screen.bars-open .intro-bar-top { transform: translateY(-100%); }
+  #intro-screen.bars-open .intro-bar-bottom { transform: translateY(100%); }
+
+  /* Star field canvas */
+  #intro-stars {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+  }
+
+  /* Lens flare */
+  .intro-flare {
+    position: absolute;
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 2;
+    opacity: 0;
+  }
+  .intro-flare-1 {
+    width: 600px; height: 600px;
+    background: radial-gradient(circle, rgba(240,192,64,0.06) 0%, transparent 70%);
+    top: -100px; left: -100px;
+    animation: flarePulse1 8s ease-in-out infinite;
+  }
+  .intro-flare-2 {
+    width: 400px; height: 400px;
+    background: radial-gradient(circle, rgba(0,212,255,0.05) 0%, transparent 70%);
+    bottom: -60px; right: -60px;
+    animation: flarePulse2 10s ease-in-out infinite;
+  }
+  @keyframes flarePulse1 {
+    0%,100% { opacity:0; transform: scale(0.8); }
+    50% { opacity:1; transform: scale(1.1); }
+  }
+  @keyframes flarePulse2 {
+    0%,100% { opacity:0; transform: scale(1); }
+    40% { opacity:0.8; transform: scale(1.15); }
+  }
+
+  /* Content wrapper */
+  .intro-content {
+    position: relative;
+    z-index: 4;
+    text-align: center;
+    padding: 0 30px;
+  }
+
+  /* Studio tag line */
+  .intro-studio {
+    font-family: 'Space Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 6px;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.3);
+    margin-bottom: 32px;
+    opacity: 0;
+    transform: translateY(8px);
+    transition: opacity 0.8s ease, transform 0.8s ease;
+  }
+  #intro-screen.phase-1 .intro-studio { opacity: 1; transform: translateY(0); }
+
+  /* Thin horizontal rule */
+  .intro-rule {
+    width: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(240,192,64,0.6), transparent);
+    margin: 0 auto 32px;
+    transition: width 1.2s cubic-bezier(0.25, 1, 0.5, 1);
+  }
+  #intro-screen.phase-1 .intro-rule { width: 220px; }
+
+  /* Main title */
+  .intro-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(42px, 9vw, 96px);
+    font-weight: 900;
+    line-height: 1.0;
+    letter-spacing: -1px;
+    color: #fff;
+    opacity: 0;
+    transform: translateY(20px) scale(0.97);
+    transition: opacity 1s ease 0.3s, transform 1s ease 0.3s;
+    text-shadow: 0 0 80px rgba(240,192,64,0.2);
+  }
+  #intro-screen.phase-1 .intro-title { opacity: 1; transform: translateY(0) scale(1); }
+
+  .intro-title-accent {
+    background: linear-gradient(135deg, var(--gold) 0%, #fff 50%, var(--cyan) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  /* Subtitle */
+  .intro-subtitle {
+    font-family: 'DM Sans', sans-serif;
+    font-size: clamp(13px, 2vw, 16px);
+    color: rgba(255,255,255,0.4);
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    margin-top: 20px;
+    opacity: 0;
+    transform: translateY(10px);
+    transition: opacity 0.9s ease 0.7s, transform 0.9s ease 0.7s;
+  }
+  #intro-screen.phase-1 .intro-subtitle { opacity: 1; transform: translateY(0); }
+
+  /* Year tag */
+  .intro-year {
+    font-family: 'Space Mono', monospace;
+    font-size: 12px;
+    color: rgba(255,255,255,0.2);
+    letter-spacing: 4px;
+    margin-top: 40px;
+    opacity: 0;
+    transition: opacity 0.8s ease 1.1s;
+  }
+  #intro-screen.phase-1 .intro-year { opacity: 1; }
+
+  /* Skip hint */
+  .intro-skip {
+    position: absolute;
+    bottom: 20px;
+    right: 24px;
+    font-family: 'Space Mono', monospace;
+    font-size: 10px;
+    color: rgba(255,255,255,0.18);
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    z-index: 5;
+    animation: skipBlink 2s ease-in-out infinite;
+    animation-delay: 1.5s;
+  }
+  @keyframes skipBlink {
+    0%,100% { opacity: 0.18; }
+    50% { opacity: 0.5; }
+  }
+
+  /* Fade out the whole intro */
+  #intro-screen.fade-out {
+    animation: introFadeOut 0.9s ease forwards;
+  }
+  @keyframes introFadeOut {
+    0% { opacity: 1; }
+    100% { opacity: 0; pointer-events: none; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ═══════════════════════════════════════════ -->
+<!-- CINEMATIC INTRO SCREEN                      -->
+<!-- ═══════════════════════════════════════════ -->
+<div id="intro-screen" onclick="skipIntro()">
+
+  <!-- Animated star canvas -->
+  <canvas id="intro-stars"></canvas>
+
+  <!-- Letterbox bars -->
+  <div class="intro-bar-top"></div>
+  <div class="intro-bar-bottom"></div>
+
+  <!-- Ambient light flares -->
+  <div class="intro-flare intro-flare-1"></div>
+  <div class="intro-flare intro-flare-2"></div>
+
+  <!-- Main content -->
+  <div class="intro-content">
+    <div class="intro-studio">A Saf Original Production</div>
+    <div class="intro-rule"></div>
+    <h1 class="intro-title">
+      <span class="intro-title-accent">Do You Really</span><br>Know Saf?
+    </h1>
+    <div class="intro-subtitle">The Ultimate Friendship Test</div>
+    <div class="intro-year">MMXXV &nbsp;·&nbsp; Est. London, Ontario</div>
+  </div>
+
+  <div class="intro-skip">Tap to skip</div>
+</div>
+
+<nav>
+  <button class="nav-btn active" onclick="showSection('home')">🏠 Home</button>
+  <button class="nav-btn" onclick="showSection('quiz')">🧠 Quiz</button>
+  <button class="nav-btn" onclick="showSection('love')">💘 Love Meter</button>
+  <button class="nav-btn" onclick="showSection('cosmos')">🌌 Cosmos</button>
+</nav>
+
+<div class="confetti-container" id="confettiContainer"></div>
+
+<!-- HOME -->
+<div class="section active" id="home">
+  <div class="hero-emoji">🌟</div>
+  <h1 class="hero-title">Do You Really Know Saf?</h1>
+  <p class="hero-sub">Think you know everything about your favourite person? Time to put that friendship to the ultimate test. 👀</p>
+  <div class="hero-cards">
+    <div class="hero-card q" onclick="showSection('quiz')">
+      <div class="card-icon">🧠</div>
+      <h3>Friend Quiz</h3>
+      <p>15 questions. Zero mercy. How well do you actually know Saf?</p>
+    </div>
+    <div class="hero-card l" onclick="showSection('love')">
+      <div class="card-icon">💘</div>
+      <h3>Love Meter</h3>
+      <p>Enter two names. Let the cosmic algorithm decide your fate.</p>
+    </div>
+    <div class="hero-card" style="max-width:210px;" onclick="showSection('cosmos')">
+      <div class="card-icon">🌌</div>
+      <h3>Cosmos</h3>
+      <p>Universe facts, future timelines & mind-shattering science.</p>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- QUIZ -->
+<div class="section" id="quiz">
+  <div class="quiz-wrap">
+    <div class="quiz-header">
+      <h2>How Well Do You Know Saf? 🤔</h2>
+      <p>15 questions. Be honest. Saf sees all.</p>
+    </div>
+    <div id="step-name" class="name-step">
+      <span class="emoji">👋</span>
+      <h3>Who's taking this quiz?</h3>
+      <p style="color:var(--muted);font-size:13px;margin-bottom:18px;">Enter your name to get started. That's all we need — for now.</p>
+      <input type="text" id="player-name" placeholder="Your name..." maxlength="50"/>
+      <button class="cta-btn" onclick="startQuiz()">Let's Go 🚀</button>
+    </div>
+    <div id="quiz-questions" style="display:none;">
+      <div class="progress-label" id="progress-label">QUESTION 1 OF 15</div>
+      <div class="progress-bar-wrap">
+        <div class="progress-bar-fill" id="progress-fill" style="width:6.66%"></div>
+      </div>
+      <div id="q-container"></div>
+      <button class="cta-btn" id="next-btn" onclick="nextQuestion()" disabled>Next →</button>
+    </div>
+    <div id="score-screen" class="score-screen" style="display:none;"></div>
+  </div>
+</div>
+
+<!-- LOVE -->
+<div class="section" id="love">
+  <div class="love-wrap">
+    <div class="love-header">
+      <h2>💘 Love Meter</h2>
+      <p>A multi-dimensional cosmic algorithm awaits. Are you ready?</p>
+    </div>
+    <div class="love-card" id="love-form-card">
+      <div class="names-row">
+        <div class="name-field">
+          <label>Your Name</label>
+          <input type="text" id="love-name1" placeholder="e.g. Sarah" maxlength="30"/>
+        </div>
+        <div class="heart-sep">💕</div>
+        <div class="name-field">
+          <label>Their Name</label>
+          <input type="text" id="love-name2" placeholder="e.g. Alex" maxlength="30"/>
+        </div>
+      </div>
+      <p style="color:var(--muted);font-size:13px;margin-bottom:18px;text-align:center;">Powered by name numerology, vowel harmony, cosmic resonance & pure chaos ✨</p>
+      <button class="love-cta" onclick="calcLove()">Reveal Our Destiny 💫</button>
+    </div>
+    <div class="love-result" id="love-result"></div>
+  </div>
+</div>
+
+<!-- ═══════════════════════ COSMOS ═══════════════════════ -->
+<div class="section" id="cosmos">
+  <div class="cosmos-wrap">
+
+    <div class="cosmos-hero">
+      <canvas id="cosmos-bg-canvas"></canvas>
+      <div class="cosmos-hero-content">
+        <div class="cosmos-tag">SCALE OF EXISTENCE</div>
+        <h2 class="cosmos-hero-title">You Are Here.</h2>
+        <p class="cosmos-hero-sub">And "here" is so impossibly small it should make you laugh, cry, and feel infinite all at once.</p>
+      </div>
+    </div>
+
+    <!-- ── TABS ── -->
+    <div class="cosmos-tabs">
+      <button class="ctab active" onclick="switchCosmosTab('scale')">📏 Scale</button>
+      <button class="ctab" onclick="switchCosmosTab('future')">⏳ Future</button>
+      <button class="ctab" onclick="switchCosmosTab('science')">🔬 Science</button>
+      <button class="ctab" onclick="switchCosmosTab('space')">🚀 Space</button>
+    </div>
+
+    <!-- ══════════ SCALE TAB ══════════ -->
+    <div class="ctab-content active" id="ctab-scale">
+
+      <!-- Universe size visual -->
+      <div class="scale-viz-card">
+        <div class="scale-title">The Scale of Everything</div>
+        <div class="scale-subtitle">Drag the slider. Lose your mind.</div>
+        <div class="scale-slider-wrap">
+          <input type="range" id="scale-slider" min="0" max="11" value="3" step="1" oninput="updateScale(this.value)"/>
+        </div>
+        <div class="scale-display" id="scale-display">
+          <div class="scale-name" id="scale-name">A Human Cell</div>
+          <div class="scale-size" id="scale-size">0.01 mm</div>
+          <div class="scale-orb-wrap">
+            <div class="scale-orb" id="scale-orb"></div>
+            <div class="scale-compare" id="scale-compare"></div>
+          </div>
+          <div class="scale-fact" id="scale-fact">There are 37 trillion of these inside you right now.</div>
+        </div>
+        <div class="scale-markers">
+          <span>Cell</span><span>Human</span><span>City</span><span>Earth</span><span>Sun</span>
+          <span>Solar System</span><span>Light Year</span><span>Galaxy</span><span>Galaxy Cluster</span>
+          <span>Observable Universe</span><span>Multiverse?</span><span>∞</span>
+        </div>
+      </div>
+
+      <!-- Mind-bending comparisons -->
+      <div class="cosmos-cards-grid">
+        <div class="cosmos-card">
+          <div class="cc-icon">🌌</div>
+          <div class="cc-num" data-target="2000000000000">0</div>
+          <div class="cc-label">Galaxies in the observable universe</div>
+          <div class="cc-fact">Each galaxy has an average of 100–400 billion stars. The number of stars in the observable universe exceeds the grains of sand on every beach on Earth — by a factor of 10,000.</div>
+        </div>
+        <div class="cosmos-card">
+          <div class="cc-icon">📏</div>
+          <div class="cc-num">93 billion</div>
+          <div class="cc-label">Light-years across — the observable universe</div>
+          <div class="cc-fact">Light travels 299,792 km every single second. The universe is so big that light from its edge has been travelling since 380,000 years after the Big Bang and still hasn't shown us everything.</div>
+        </div>
+        <div class="cosmos-card">
+          <div class="cc-icon">🕳️</div>
+          <div class="cc-num" data-target="66">0</div>
+          <div class="cc-label">Billion light-years — the cosmic web spans</div>
+          <div class="cc-fact">Galaxies aren't scattered randomly. They form colossal filaments — the Cosmic Web — with vast empty voids between them. The largest known structure is the Hercules–Corona Borealis Great Wall: 10 billion light-years long.</div>
+        </div>
+        <div class="cosmos-card">
+          <div class="cc-icon">⚛️</div>
+          <div class="cc-num">10⁸⁰</div>
+          <div class="cc-label">Atoms in the observable universe</div>
+          <div class="cc-fact">That's a 1 followed by 80 zeros. Yet quantum mechanics tells us there are infinite parallel universes where every possible outcome of every event has already happened.</div>
+        </div>
+        <div class="cosmos-card">
+          <div class="cc-icon">🌑</div>
+          <div class="cc-num">95%</div>
+          <div class="cc-label">Of the universe is dark matter & dark energy</div>
+          <div class="cc-fact">Everything you can see, touch, and feel — every star, planet, galaxy — makes up just 5% of the universe. The other 95% is completely invisible and we have no idea what it actually is.</div>
+        </div>
+        <div class="cosmos-card">
+          <div class="cc-icon">🔭</div>
+          <div class="cc-num">13.8 bn</div>
+          <div class="cc-label">Years — age of the universe</div>
+          <div class="cc-fact">If the entire history of the universe were compressed into one year, humans appear at 11:59:59 PM on December 31st. All of recorded human history is the last 0.22 seconds of that cosmic year.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══════════ FUTURE TAB ══════════ -->
+    <div class="ctab-content" id="ctab-future">
+      <div class="timeline-wrap">
+        <div class="timeline-header">
+          <div class="cosmos-tag">DEEP TIME</div>
+          <h3 class="timeline-title">The Future of Everything</h3>
+          <p class="timeline-sub">Brace yourself. This goes far.</p>
+        </div>
+
+        <div class="timeline">
+          <div class="tl-item" data-color="#f0c040">
+            <div class="tl-year">2029</div>
+            <div class="tl-dot"></div>
+            <div class="tl-card">
+              <div class="tl-tag">NEAR FUTURE</div>
+              <div class="tl-event">AI surpasses human intelligence</div>
+              <div class="tl-desc">Ray Kurzweil's singularity prediction — AI reaches and exceeds human-level general intelligence. Within years after, it designs its own successors. The world we know changes faster than history ever moved before.</div>
+            </div>
+          </div>
+          <div class="tl-item" data-color="#00d4ff">
+            <div class="tl-year">2050</div>
+            <div class="tl-dot"></div>
+            <div class="tl-card">
+              <div class="tl-tag">NEXT GENERATION</div>
+              <div class="tl-event">Permanent Mars colony established</div>
+              <div class="tl-desc">SpaceX, NASA and private ventures establish the first self-sustaining human settlement on Mars. Humanity becomes a multi-planetary species. The first Martian-born human draws breath under a dome looking at two moons.</div>
+            </div>
+          </div>
+          <div class="tl-item" data-color="#a855f7">
+            <div class="tl-year">2100</div>
+            <div class="tl-dot"></div>
+            <div class="tl-card">
+              <div class="tl-tag">THIS CENTURY</div>
+              <div class="tl-event">Death becomes optional</div>
+              <div class="tl-desc">Advances in genetic engineering, nanomedicine, and mind uploading may make biological death a choice rather than an inevitability. The first humans to live to 1,000 years old are probably already alive today.</div>
+            </div>
+          </div>
+          <div class="tl-item" data-color="#22d3a0">
+            <div class="tl-year">1,000 years</div>
+            <div class="tl-dot"></div>
+            <div class="tl-card">
+              <div class="tl-tag">FAR FUTURE</div>
+              <div class="tl-event">Earth's continents rearrange</div>
+              <div class="tl-desc">Tectonic plates keep moving. In roughly 250 million years, all continents will merge again into a supercontinent called Pangaea Ultima. But 1,000 years from now, the map will already look subtly different.</div>
+            </div>
+          </div>
+          <div class="tl-item" data-color="#ff6b9d">
+            <div class="tl-year">5 billion years</div>
+            <div class="tl-dot"></div>
+            <div class="tl-card">
+              <div class="tl-tag">STELLAR DEATH</div>
+              <div class="tl-event">The Sun dies</div>
+              <div class="tl-desc">The Sun expands into a Red Giant, engulfing Mercury, Venus, and likely Earth. It then sheds its outer layers, leaving behind a white dwarf — a glowing ember the size of Earth, slowly cooling for billions of years.</div>
+            </div>
+          </div>
+          <div class="tl-item" data-color="#f0c040">
+            <div class="tl-year">4 trillion years</div>
+            <div class="tl-dot"></div>
+            <div class="tl-card">
+              <div class="tl-tag">GALACTIC FATE</div>
+              <div class="tl-event">The last stars go dark</div>
+              <div class="tl-desc">All hydrogen fuel in the universe is consumed. The last red dwarf stars burn out. The universe enters a trillion-year dark age — black holes dominate, slowly evaporating via Hawking radiation over incomprehensible timescales.</div>
+            </div>
+          </div>
+          <div class="tl-item" data-color="#ff4444">
+            <div class="tl-year">10¹⁰⁰ years</div>
+            <div class="tl-dot"></div>
+            <div class="tl-card">
+              <div class="tl-tag">HEAT DEATH</div>
+              <div class="tl-event">The end of everything</div>
+              <div class="tl-desc">The last black hole evaporates. The universe reaches maximum entropy — a state called Heat Death. No gradients of energy. No movement. No time as we know it. Just an infinite, cold, dark, perfectly uniform void. Forever.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══════════ SCIENCE TAB ══════════ -->
+    <div class="ctab-content" id="ctab-science">
+      <div class="science-header">
+        <div class="cosmos-tag">REALITY IS BROKEN</div>
+        <h3 class="cosmos-section-title">Facts That Break Your Brain</h3>
+        <p class="cosmos-section-sub">These are not opinions. These are proven, peer-reviewed, Nobel Prize-winning facts.</p>
+      </div>
+      <div class="fact-cards">
+
+        <div class="fact-card" onclick="this.classList.toggle('flipped')">
+          <div class="fact-front">
+            <div class="fact-icon">👁️</div>
+            <div class="fact-q">You never see the present moment</div>
+            <div class="fact-tap">tap to reveal</div>
+          </div>
+          <div class="fact-back">
+            <div class="fact-detail">Light takes time to travel from objects to your eyes. The Moon you see is 1.3 seconds old. The Sun is 8 minutes old. The Andromeda Galaxy in the night sky is 2.5 million years old. You are always looking into the past. Always. There is no "now" when you observe anything.</div>
+          </div>
+        </div>
+
+        <div class="fact-card" onclick="this.classList.toggle('flipped')">
+          <div class="fact-front">
+            <div class="fact-icon">⏰</div>
+            <div class="fact-q">Time moves slower near heavy objects</div>
+            <div class="fact-tap">tap to reveal</div>
+          </div>
+          <div class="fact-back">
+            <div class="fact-detail">Einstein's General Relativity proven: GPS satellites have to correct for time dilation daily or they'd be off by 11km per day. Time literally moves faster for your head than your feet. A clock at sea level runs slower than one on a mountain. Time is not a constant — it bends.</div>
+          </div>
+        </div>
+
+        <div class="fact-card" onclick="this.classList.toggle('flipped')">
+          <div class="fact-front">
+            <div class="fact-icon">👻</div>
+            <div class="fact-q">Quantum particles exist in multiple states simultaneously</div>
+            <div class="fact-tap">tap to reveal</div>
+          </div>
+          <div class="fact-back">
+            <div class="fact-detail">Until observed, a quantum particle exists in all possible states at once — a superposition. The act of measuring it forces it to "choose." Schrödinger's cat is simultaneously alive and dead until you look. This isn't a thought experiment. It's how the universe actually works at the smallest scales.</div>
+          </div>
+        </div>
+
+        <div class="fact-card" onclick="this.classList.toggle('flipped')">
+          <div class="fact-front">
+            <div class="fact-icon">🌀</div>
+            <div class="fact-q">Two particles can be connected across the entire universe instantly</div>
+            <div class="fact-tap">tap to reveal</div>
+          </div>
+          <div class="fact-back">
+            <div class="fact-detail">Quantum entanglement: measure one entangled particle and its partner — on the other side of the universe — instantly reflects the result. Faster than light. Einstein called it "spooky action at a distance" because it terrified him. It's real. We use it in quantum computers right now.</div>
+          </div>
+        </div>
+
+        <div class="fact-card" onclick="this.classList.toggle('flipped')">
+          <div class="fact-front">
+            <div class="fact-icon">💥</div>
+            <div class="fact-q">You are made of dead stars</div>
+            <div class="fact-tap">tap to reveal</div>
+          </div>
+          <div class="fact-back">
+            <div class="fact-detail">Every atom heavier than hydrogen in your body — the carbon in your DNA, the iron in your blood, the calcium in your bones — was forged inside the core of a star that exploded before our solar system existed. You are not on Earth. You are a part of the universe experiencing itself.</div>
+          </div>
+        </div>
+
+        <div class="fact-card" onclick="this.classList.toggle('flipped')">
+          <div class="fact-front">
+            <div class="fact-icon">🔁</div>
+            <div class="fact-q">The universe shouldn't exist</div>
+            <div class="fact-tap">tap to reveal</div>
+          </div>
+          <div class="fact-back">
+            <div class="fact-detail">The Big Bang created equal amounts of matter and antimatter. They should have annihilated each other, leaving nothing. But for every 10 billion antimatter particles, there were 10 billion and 1 matter particles. That tiny imbalance is the reason everything — every star, planet, and person — exists.</div>
+          </div>
+        </div>
+
+        <div class="fact-card" onclick="this.classList.toggle('flipped')">
+          <div class="fact-front">
+            <div class="fact-icon">🧠</div>
+            <div class="fact-q">Your brain simulates reality — not experiences it</div>
+            <div class="fact-tap">tap to reveal</div>
+          </div>
+          <div class="fact-back">
+            <div class="fact-detail">Your brain receives electrical signals and constructs a model of reality. The colour red doesn't exist in nature — it's your brain's interpretation of a wavelength. Sound is a story your brain tells. Even "solid" objects are mostly empty space. You have never touched anything. Electron repulsion created the illusion.</div>
+          </div>
+        </div>
+
+        <div class="fact-card" onclick="this.classList.toggle('flipped')">
+          <div class="fact-front">
+            <div class="fact-icon">📐</div>
+            <div class="fact-q">The universe has no centre</div>
+            <div class="fact-tap">tap to reveal</div>
+          </div>
+          <div class="fact-back">
+            <div class="fact-detail">The Big Bang didn't explode from a point in space — space itself expanded. Every galaxy sees every other galaxy moving away from it. From anywhere in the universe, you would appear to be at the centre. There is no edge, no boundary, no special point. It's infinite in all directions and the same in all directions.</div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- ══════════ SPACE TAB ══════════ -->
+    <div class="ctab-content" id="ctab-space">
+      <div class="space-header">
+        <div class="cosmos-tag">THE FINAL FRONTIER</div>
+        <h3 class="cosmos-section-title">Space Facts That Hit Different</h3>
+        <p class="cosmos-section-sub">Not textbook. Not boring. The stuff that makes you stare at the ceiling at 3am.</p>
+      </div>
+
+      <div class="space-grid">
+
+        <div class="space-big-card">
+          <canvas id="blackhole-canvas" width="340" height="340"></canvas>
+          <div class="space-big-content">
+            <div class="space-big-tag">🕳️ BLACK HOLES</div>
+            <h4>Where Physics Goes to Die</h4>
+            <p>At the singularity of a black hole, every equation in physics breaks down and returns infinity — meaning we literally don't know what happens there. Time stops at the event horizon. An astronaut falling in would look frozen forever to an outside observer, while experiencing nothing unusual.</p>
+            <p style="margin-top:12px;">The supermassive black hole at the centre of our galaxy — Sagittarius A* — is 4 million times the mass of the Sun. It could fit 20 million Suns inside it. And there's one at the centre of every large galaxy we've ever found.</p>
+          </div>
+        </div>
+
+        <div class="space-fact-row">
+          <div class="sf-item">
+            <div class="sf-icon">🌡️</div>
+            <div class="sf-title">Space is -270.45°C</div>
+            <div class="sf-desc">Just 2.7 degrees above absolute zero — the theoretical coldest anything can ever be. Yet stand in direct sunlight in space without a suit and you'd burn at +120°C simultaneously. Space is a contradiction.</div>
+          </div>
+          <div class="sf-item">
+            <div class="sf-icon">🔇</div>
+            <div class="sf-title">Space is completely silent</div>
+            <div class="sf-desc">Sound needs a medium to travel. In the vacuum of space, no one can hear anything — not an explosion, not a supernova, not a planet cracking apart. The universe's most violent events happen in total, absolute silence.</div>
+          </div>
+          <div class="sf-item">
+            <div class="sf-icon">💎</div>
+            <div class="sf-title">It rains diamonds on Neptune</div>
+            <div class="sf-desc">The extreme pressure in Neptune's atmosphere compresses carbon into diamond crystals that rain down through the mantle. There may be oceans of liquid diamond with solid diamond icebergs floating in them, deep inside Neptune right now.</div>
+          </div>
+          <div class="sf-item">
+            <div class="sf-icon">🌊</div>
+            <div class="sf-title">There's a water cloud 140 trillion times Earth's oceans</div>
+            <div class="sf-desc">Discovered around a distant quasar 12 billion light-years away — the largest reservoir of water ever found. A cloud of water vapour holding 140 trillion times all the water in Earth's oceans, floating in space around a feeding black hole.</div>
+          </div>
+          <div class="sf-item">
+            <div class="sf-icon">☀️</div>
+            <div class="sf-title">A photon takes 100,000 years to leave the Sun</div>
+            <div class="sf-desc">A photon created in the Sun's core bounces between plasma particles for an average of 100,000 years before reaching the surface. Then it crosses 150 million km of empty space to reach Earth in just 8 minutes.</div>
+          </div>
+          <div class="sf-item">
+            <div class="sf-icon">🪐</div>
+            <div class="sf-title">Saturn would float on water</div>
+            <div class="sf-desc">Saturn's density is so low — 0.69 g/cm³ — that it would float if you found an ocean big enough to put it in. It's a gas giant so diffuse that despite being 95 times Earth's mass, it's less dense than liquid water.</div>
+          </div>
+          <div class="sf-item">
+            <div class="sf-icon">🧲</div>
+            <div class="sf-title">Neutron stars spin 700 times per second</div>
+            <div class="sf-desc">A neutron star — the collapsed core of a dead star — crams 2 solar masses into a sphere 20km across. A teaspoon of neutron star weighs a billion tons. The fastest known pulsars spin 716 times per second, generating magnetic fields a trillion times stronger than Earth's.</div>
+          </div>
+          <div class="sf-item">
+            <div class="sf-icon">🌍</div>
+            <div class="sf-title">We're moving at 2.1 million km/h right now</div>
+            <div class="sf-desc">Earth spins at 1,670 km/h. It orbits the Sun at 107,000 km/h. The solar system orbits the Milky Way at 828,000 km/h. The Milky Way moves through space at 2.1 million km/h. You feel none of it.</div>
+          </div>
+        </div>
+
+        <!-- Fermi Paradox card -->
+        <div class="fermi-card">
+          <div class="fermi-title">🛸 The Fermi Paradox</div>
+          <div class="fermi-sub">The most haunting question in science</div>
+          <div class="fermi-body">
+            <p>The universe is 13.8 billion years old. There are 400 billion stars in our galaxy alone. Planets with liquid water are common. Life on Earth appeared almost immediately after conditions allowed it. Intelligence evolved. Technology followed.</p>
+            <p>By all statistical reasoning, the galaxy should be <em>teeming</em> with civilisations. Many of them should be millions of years more advanced than us.</p>
+            <p><strong>So where is everybody?</strong></p>
+            <p>The silence is deafening. And every proposed answer — they're extinct, they're hiding, they're already here, we're in a simulation, there's a Great Filter ahead of us — is more unsettling than the last.</p>
+          </div>
+          <div class="fermi-options">
+            <div class="fo">🧫 We are the first</div>
+            <div class="fo">😶 They are hiding</div>
+            <div class="fo">☠️ Something kills all civilisations</div>
+            <div class="fo">🖥️ We're in a simulation</div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+// ═══════════════════════════════════════════════════
+// QUIZ DATA
+// ═══════════════════════════════════════════════════
+const CORRECT = {
+  0:"a", 1:"a", 2:"a", 3:"b", 4:"b",
+  5:"d", 6:"a", 7:"a", 8:"a", 9:"a",
+  10:"b", 11:"a", 12:"b", 13:"b", 14:"a"
+};
+
+const QUESTIONS = [
+  {
+    emoji:"⚡🧙", num:"01",
+    text:"Harry Potter or Lord of the Rings?",
+    hint:"One of these worlds lives rent-free in his head.",
+    type:"choice",
+    options:[
+      {id:"a",icon:"⚡",text:"Harry Potter — always"},
+      {id:"b",icon:"💍",text:"Lord of the Rings — one ring, one life"},
+      {id:"c",icon:"🤷",text:"Both equally, can't choose"},
+      {id:"d",icon:"😴",text:"Neither, honestly"}
+    ]
+  },
+  {
+    emoji:"🖤❤️", num:"02",
+    text:"What's Saf's signature color vibe?",
+    hint:"Open his wardrobe. What dominates?",
+    type:"choice",
+    options:[
+      {id:"a",icon:"🖤",text:"Dark & moody — black, deep tones"},
+      {id:"b",icon:"🌟",text:"Bright & bold — yellow, orange"},
+      {id:"c",icon:"💙",text:"Cool & calm — blues, greens"},
+      {id:"d",icon:"🌸",text:"Soft pastels, cotton candy vibes"}
+    ]
+  },
+  {
+    emoji:"🎬🛋️", num:"03",
+    text:"Saf's perfect weekend looks like...",
+    hint:"Involves a screen and zero obligations.",
+    type:"choice",
+    options:[
+      {id:"a",icon:"🎬",text:"Binge-watching movies & series all day"},
+      {id:"b",icon:"🎉",text:"Out socialising, life of the party"},
+      {id:"c",icon:"🎮",text:"Deep in some tech rabbit hole"},
+      {id:"d",icon:"📚",text:"Reading or completely zoning out"}
+    ]
+  },
+  {
+    emoji:"☕🍵", num:"04",
+    text:"Coffee ☕ or Tea 🍵?",
+    hint:"This one is very revealing about a person.",
+    type:"choice",
+    options:[
+      {id:"a",icon:"☕",text:"Coffee — the stronger the better"},
+      {id:"b",icon:"🍵",text:"Tea — always and forever"},
+      {id:"c",icon:"💧",text:"Just water, thanks"},
+      {id:"d",icon:"🥤",text:"Both, depends on the mood"}
+    ]
+  },
+  {
+    emoji:"🍔🍛", num:"05",
+    text:"What's Saf's go-to food order?",
+    hint:"Quick, delicious, no judgment.",
+    type:"choice",
+    options:[
+      {id:"a",icon:"🍛",text:"Rice & curry / Desi food — always"},
+      {id:"b",icon:"🍔",text:"Fast food / Burgers — no apologies"},
+      {id:"c",icon:"🌶️",text:"Spicy everything — heat is a personality"},
+      {id:"d",icon:"🍕",text:"Pizza / Italian — classic forever"}
+    ]
+  },
+  {
+    emoji:"🎵🎶", num:"06",
+    text:"What's Saf's playlist actually like?",
+    hint:"His music taste doesn't fit neatly in a box.",
+    type:"choice",
+    options:[
+      {id:"a",icon:"🎤",text:"Pure pop — mainstream hits only"},
+      {id:"b",icon:"🎸",text:"Rock / Metal — headbanging only"},
+      {id:"c",icon:"🪘",text:"Bollywood / Desi exclusively"},
+      {id:"d",icon:"🎧",text:"A chaotic mix of everything — no genre loyalty"}
+    ]
+  },
+  {
+    emoji:"⚽🔴", num:"07",
+    text:"What's Saf's relationship with football?",
+    hint:"He bleeds a very specific shade of red.",
+    type:"choice",
+    options:[
+      {id:"a",icon:"🔴",text:"Diehard Manchester United fan ⚽"},
+      {id:"b",icon:"💙",text:"Manchester City all the way"},
+      {id:"c",icon:"❤️",text:"Liverpool supporter"},
+      {id:"d",icon:"🤷",text:"Football? Not really his thing"}
+    ]
+  },
+  {
+    emoji:"🌌🎬", num:"08",
+    text:"Saf's favourite movie is Interstellar. But which Christopher Nolan film does he think is the most mind-bending?",
+    hint:"Nolan's entire filmography is basically Saf's watchlist.",
+    type:"choice",
+    options:[
+      {id:"a",icon:"🌌",text:"Interstellar — Cooper and the wormhole forever"},
+      {id:"b",icon:"🦇",text:"The Dark Knight — the greatest superhero film ever"},
+      {id:"c",icon:"🎭",text:"Inception — dreams within dreams, iconic"},
+      {id:"d",icon:"⏳",text:"Tenet — still trying to understand it"}
+    ]
+  },
+  {
+    emoji:"📸🎥", num:"09",
+    text:"What creative passion does Saf's soul truly crave?",
+    hint:"He sees the world through a very specific lens.",
+    type:"choice",
+    options:[
+      {id:"a",icon:"📸",text:"Photography & Videography — capturing everything"},
+      {id:"b",icon:"🎨",text:"Graphic design & digital art"},
+      {id:"c",icon:"✍️",text:"Writing — blogs, poetry, stories"},
+      {id:"d",icon:"🎵",text:"Music production & mixing"}
+    ]
+  },
+  {
+    emoji:"🖤👕", num:"10",
+    text:"What's Saf's signature wardrobe piece?",
+    hint:"He probably owns seven of these in the same colour.",
+    type:"choice",
+    options:[
+      {id:"a",icon:"🖤",text:"Black hoodies — the official uniform"},
+      {id:"b",icon:"👔",text:"Smart casual shirts — always polished"},
+      {id:"c",icon:"🧥",text:"Oversized jackets — street style"},
+      {id:"d",icon:"👟",text:"Statement sneakers — it starts from the ground"}
+    ]
+  },
+  {
+    emoji:"🌍✈️", num:"11",
+    text:"What's Saf's biggest dream in life?",
+    hint:"Involves a passport, a camera, and every country on Earth.",
+    type:"choice",
+    options:[
+      {id:"a",icon:"💻",text:"Build the next big tech startup"},
+      {id:"b",icon:"🌍",text:"Travel every country and document it on video"},
+      {id:"c",icon:"🎬",text:"Direct a blockbuster film"},
+      {id:"d",icon:"📡",text:"Become a global political analyst"}
+    ]
+  },
+  {
+    emoji:"🌐🗺️", num:"12",
+    text:"What topic can Saf talk about for hours non-stop?",
+    hint:"Maps, borders, conflicts, power dynamics — it's a whole thing.",
+    type:"choice",
+    options:[
+      {id:"a",icon:"🌐",text:"Geopolitics & monitoring world conflicts"},
+      {id:"b",icon:"📱",text:"The latest tech releases & gadgets"},
+      {id:"c",icon:"⚽",text:"Football tactics & transfer news"},
+      {id:"d",icon:"🎬",text:"Cinema history & director breakdowns"}
+    ]
+  },
+  {
+    emoji:"🎼🎹", num:"13",
+    text:"Who is Saf's favourite composer / music artist?",
+    hint:"Think Interstellar. Think The Dark Knight. Think Time. That soundtrack.",
+    type:"choice",
+    options:[
+      {id:"a",icon:"🎵",text:"John Williams — the classic legend"},
+      {id:"b",icon:"🎼",text:"Hans Zimmer — the GOAT, no debate"},
+      {id:"c",icon:"🎻",text:"Ennio Morricone — the Italian maestro"},
+      {id:"d",icon:"🎹",text:"Ludwig Göransson — the modern voice"}
+    ]
+  },
+  {
+    emoji:"🎬🧠", num:"14",
+    text:"Which Christopher Nolan movie changed Saf's life?",
+    hint:"One of these films rewired how he sees cinema forever.",
+    type:"choice",
+    options:[
+      {id:"a",icon:"🌌",text:"Interstellar — time, love, and the fifth dimension"},
+      {id:"b",icon:"🦇",text:"The Dark Knight — the greatest film ever made"},
+      {id:"c",icon:"🎭",text:"Inception — you never looked at dreams the same"},
+      {id:"d",icon:"🪄",text:"The Prestige — the greatest trick he ever saw"}
+    ]
+  },
+  {
+    emoji:"✍️🔮", num:"15",
+    text:"If Saf could send one message to the entire world right now, what would it be?",
+    hint:"Channel your inner Saf. No wrong answers… mostly.",
+    type:"text"
+  }
+];
+
+// ═══════════════════════════════════════════════════
+// STATE
+// ═══════════════════════════════════════════════════
+let playerName = "";
+let currentQ = 0;
+let answers = {};
+let score = 0;
+
+// ═══════════════════════════════════════════════════
+// NAVIGATION — handled in cosmos engine above
+// ═══════════════════════════════════════════════════
+
+// ═══════════════════════════════════════════════════
+// QUIZ LOGIC
+// ═══════════════════════════════════════════════════
+function startQuiz() {
+  playerName = document.getElementById('player-name').value.trim();
+  if (!playerName) {
+    document.getElementById('player-name').style.borderColor = 'var(--pink)';
+    document.getElementById('player-name').focus();
+    return;
+  }
+  document.getElementById('step-name').style.display = 'none';
+  document.getElementById('quiz-questions').style.display = 'block';
+  renderQuestion(0);
+}
+
+function renderQuestion(index) {
+  const q = QUESTIONS[index];
+  const total = QUESTIONS.length;
+  document.getElementById('progress-label').textContent = `QUESTION ${index + 1} OF ${total}`;
+  document.getElementById('progress-fill').style.width = `${((index + 1) / total) * 100}%`;
+  const nextBtn = document.getElementById('next-btn');
+  nextBtn.disabled = q.type !== 'text';
+  nextBtn.textContent = index === total - 1 ? 'See My Score 🎯' : 'Next →';
+
+  let optHTML = '';
+  if (q.type === 'choice') {
+    optHTML = `<div class="options-grid">` +
+      q.options.map(o => `<button class="opt-btn" id="opt-${o.id}" onclick="selectOpt('${o.id}')"><span>${o.icon}</span>${o.text}</button>`).join('') +
+      `</div>`;
+  } else {
+    optHTML = `<div class="text-q-wrap"><textarea id="text-ans" placeholder="Write from the heart. Be real."
+      oninput="document.getElementById('next-btn').disabled = this.value.trim().length < 4"></textarea></div>`;
+  }
+
+  document.getElementById('q-container').innerHTML = `
+    <div class="q-card">
+      <div class="q-num">Question ${q.num} / ${String(total).padStart(2,'0')}</div>
+      <span class="q-emoji">${q.emoji}</span>
+      <div class="q-text">${q.text}</div>
+      <div class="q-hint">💭 ${q.hint}</div>
+      ${optHTML}
+    </div>`;
+
+  if (answers[index]) {
+    if (q.type === 'choice') selectOpt(answers[index], true);
+    else {
+      const ta = document.getElementById('text-ans');
+      if (ta) { ta.value = answers[index]; nextBtn.disabled = false; }
+    }
+  }
+}
+
+function selectOpt(id, silent = false) {
+  document.querySelectorAll('.opt-btn').forEach(b => b.classList.remove('selected'));
+  const btn = document.getElementById('opt-' + id);
+  if (btn) btn.classList.add('selected');
+  answers[currentQ] = id;
+  document.getElementById('next-btn').disabled = false;
+  if (!silent) spawnSparkle();
+}
+
+function nextQuestion() {
+  const ta = document.getElementById('text-ans');
+  if (ta) answers[currentQ] = ta.value.trim();
+  if (currentQ < QUESTIONS.length - 1) { currentQ++; renderQuestion(currentQ); }
+  else showScore();
+}
+
+function showScore() {
+  score = 0;
+  for (let i = 0; i < QUESTIONS.length - 1; i++) {
+    if (CORRECT[i] !== null && CORRECT[i] && answers[i] === CORRECT[i]) score++;
+  }
+  if (answers[14] && answers[14].length > 6) score += 0.5;
+
+  const total = QUESTIONS.length;
+  const pct = Math.round((score / total) * 100);
+  const { label, msg, emoji } = getScoreTier(pct);
+
+  document.getElementById('quiz-questions').style.display = 'none';
+  const sc = document.getElementById('score-screen');
+  sc.style.display = 'block';
+
+  let reviewHTML = '';
+  for (let i = 0; i < QUESTIONS.length; i++) {
+    const q = QUESTIONS[i]; const ua = answers[i];
+    if (q.type === 'text') {
+      reviewHTML += `<div class="review-item"><div class="r-q">Q${i+1}: ${q.text}</div><div class="r-a" style="color:var(--cyan)">📝 "${ua || '—'}"</div></div>`;
+    } else {
+      const isRight = ua === CORRECT[i];
+      const userOpt = q.options.find(o => o.id === ua);
+      const corrOpt = q.options.find(o => o.id === CORRECT[i]);
+      reviewHTML += `<div class="review-item">
+        <div class="r-q">Q${i+1}: ${q.text}</div>
+        <div class="r-a ${isRight ? 'r-correct' : 'r-wrong'}">${isRight ? '✅' : '❌'} ${userOpt ? userOpt.text : '—'}</div>
+        ${!isRight ? `<div class="r-correct-ans">✨ Correct: ${corrOpt ? corrOpt.text : ''}</div>` : ''}
+      </div>`;
+    }
+  }
+
+  const ringColor = pct >= 70 ? 'var(--green)' : pct >= 40 ? 'var(--gold)' : 'var(--pink)';
+  const circ = 2 * Math.PI * 62;
+
+  sc.innerHTML = `
+    <div class="score-ring">
+      <svg viewBox="0 0 150 150" width="150" height="150">
+        <circle class="ring-bg" cx="75" cy="75" r="62"/>
+        <circle class="ring-fill" cx="75" cy="75" r="62" stroke="${ringColor}"
+          stroke-dasharray="${circ}" stroke-dashoffset="${circ}" id="ring-fill-el"/>
+      </svg>
+      <div class="ring-text">
+        <span class="num">${Math.round(score * 10) / 10}</span>
+        <span class="of">/ ${total}</span>
+      </div>
+    </div>
+    <div class="score-label">${emoji} ${label}</div>
+    <div class="score-msg">${msg}</div>
+    <div class="answers-review">
+      <h4>📋 Full Answer Review</h4>
+      ${reviewHTML}
+    </div>
+    <button class="cta-btn" onclick="resetQuiz()">Take It Again 🔄</button>`;
+
+  setTimeout(() => {
+    const el = document.getElementById('ring-fill-el');
+    if (el) el.style.strokeDashoffset = circ - (pct / 100) * circ;
+  }, 100);
+
+  if (pct >= 70) triggerConfetti();
+  submitQuizToFormspree(playerName, score, total, pct);
+}
+
+function getScoreTier(pct) {
+  if (pct >= 93) return { label:"Best Friend Certified 🏆", msg:`${playerName}, you're basically Saf's biographer. You know his soul at a different level. This is unreal.`, emoji:"🌟" };
+  if (pct >= 75) return { label:"You Really Know Your Guy 🔥", msg:`Solid work, ${playerName}. You clearly pay attention when Saf talks. Top-tier friendship energy right here.`, emoji:"🔥" };
+  if (pct >= 55) return { label:"Mid-Tier Friend Energy 😏", msg:`Not bad, ${playerName}. You know the surface stuff but there are clearly some gaps. More quality time is needed.`, emoji:"😏" };
+  if (pct >= 35) return { label:"Do You Even Know Saf? 👀", msg:`Hmm... ${playerName}, are you sure you two are actually friends? Some of these answers are giving stranger vibes.`, emoji:"👀" };
+  return { label:"Who Are You Again? 💀", msg:`${playerName}... this is impressively bad. Did you just click randomly? Saf would like a word.`, emoji:"💀" };
+}
+
+function resetQuiz() {
+  currentQ = 0; answers = {}; score = 0; playerName = "";
+  document.getElementById('score-screen').style.display = 'none';
+  document.getElementById('step-name').style.display = 'block';
+  document.getElementById('player-name').value = '';
+}
+
+async function submitQuizToFormspree(name, score, total, pct) {
+  try {
+    const fd = new FormData();
+    fd.append("_subject", `🧠 ${name} scored ${pct}% on the Saf Quiz!`);
+    fd.append("TYPE", "QUIZ");
+    fd.append("Player Name", name);
+    fd.append("Score", `${Math.round(score * 10) / 10} / ${total} (${pct}%)`);
+    for (let i = 0; i < QUESTIONS.length; i++) {
+      const q = QUESTIONS[i]; const ua = answers[i];
+      if (q.type === 'choice') {
+        const opt = q.options.find(o => o.id === ua);
+        fd.append(`Q${i+1}: ${q.text.substring(0, 45)}`, opt ? opt.text : '—');
+      } else {
+        fd.append(`Q${i+1} (Open): ${q.text.substring(0, 40)}`, ua || '—');
+      }
+    }
+    await fetch("https://formspree.io/f/xgopozpe", { method:"POST", body:fd, headers:{"Accept":"application/json"} });
+  } catch(e) {}
+}
+
+// ═══════════════════════════════════════════════════
+// LOVE METER — UNIQUE MULTI-DIMENSIONAL ALGORITHM
+// ═══════════════════════════════════════════════════
+function loveAlgorithm(n1, n2) {
+  const a = n1.toLowerCase().replace(/\s/g, '');
+  const b = n2.toLowerCase().replace(/\s/g, '');
+
+  // 1. Name Numerology — weighted char code sums
+  const numA = [...a].reduce((s, c, i) => s + c.charCodeAt(0) * (i + 1), 0);
+  const numB = [...b].reduce((s, c, i) => s + c.charCodeAt(0) * (i + 1), 0);
+  const numerology = Math.min(98, Math.max(22, ((numA * 3 + numB * 5) % 77) + 22));
+
+  // 2. Vowel Harmony — shared vowel sets
+  const vowels = 'aeiou';
+  const vA = new Set([...a].filter(c => vowels.includes(c)));
+  const vB = new Set([...b].filter(c => vowels.includes(c)));
+  const sharedV = [...vA].filter(v => vB.has(v)).length;
+  const totalV = Math.max(vA.size + vB.size, 1);
+  const vowelHarmony = Math.min(98, Math.max(18, Math.round((sharedV / totalV) * 100 + 28 + ((numA + numB) % 15))));
+
+  // 3. Rhythm Sync — alternating char XOR pattern
+  let xorSum = 0;
+  const mLen = Math.max(a.length, b.length);
+  for (let i = 0; i < mLen; i++) {
+    const ca = a.charCodeAt(i % a.length);
+    const cb = b.charCodeAt(i % b.length);
+    xorSum += (ca ^ cb) * (i % 2 === 0 ? 1 : 2);
+  }
+  const rhythm = Math.min(98, Math.max(20, (xorSum % 60) + 25));
+
+  // 4. Initial Chemistry — first + last letter interactions
+  const firstA = a.charCodeAt(0), lastA = a.charCodeAt(a.length - 1);
+  const firstB = b.charCodeAt(0), lastB = b.charCodeAt(b.length - 1);
+  const initChem = Math.min(98, Math.max(20, ((firstA * lastB + firstB * lastA) % 68) + 22));
+
+  // 5. Cosmic Resonance — prime-based chaos
+  const primes = [2, 3, 5, 7, 11, 13, 17, 19, 23];
+  let cosmicVal = 0;
+  [...(a + b)].forEach((c, i) => { cosmicVal += c.charCodeAt(0) * primes[i % primes.length]; });
+  const cosmic = Math.min(98, Math.max(18, (cosmicVal % 72) + 18));
+
+  const dims = [
+    { label: "Name Numerology ✨", score: numerology },
+    { label: "Vowel Harmony 🎵", score: vowelHarmony },
+    { label: "Rhythm Sync 🔄", score: rhythm },
+    { label: "Initial Chemistry ⚡", score: initChem },
+    { label: "Cosmic Resonance 🌌", score: cosmic }
+  ];
+
+  const weights = [0.25, 0.20, 0.20, 0.15, 0.20];
+  const weighted = Math.round(dims.reduce((s, d, i) => s + d.score * weights[i], 0));
+  const total = Math.min(99, Math.max(16, weighted));
+
+  return { total, dims };
+}
+
+function calcLove() {
+  const n1 = document.getElementById('love-name1').value.trim();
+  const n2 = document.getElementById('love-name2').value.trim();
+  if (!n1 || !n2) {
+    if (!n1) document.getElementById('love-name1').style.borderColor = 'var(--pink)';
+    if (!n2) document.getElementById('love-name2').style.borderColor = 'var(--pink)';
+    return;
+  }
+
+  const { total, dims } = loveAlgorithm(n1, n2);
+  document.getElementById('love-form-card').style.display = 'none';
+  const result = document.getElementById('love-result');
+
+  const { tier, msg, heartEmoji } = getLoveTier(total, n1, n2);
+  const kissOrNot = total >= 62
+    ? `<div class="kiss-animation"><span class="kiss-left">😘</span><span>💋</span><span class="kiss-right">🥰</span></div>`
+    : total >= 40 ? `<div style="font-size:52px;margin:16px 0;">🫶</div>`
+    : `<div style="font-size:52px;margin:16px 0;">😬</div>`;
+
+  const dimColors = ['#ff6b9d','#a855f7','#00d4ff','#f0c040','#22d3a0'];
+  const dimHTML = dims.map((d, i) => `
+    <div class="breakdown-item">
+      <div class="b-label"><span>${d.label}</span><span>${d.score}%</span></div>
+      <div class="b-bar-wrap"><div class="b-bar-fill" id="dim-${i}" style="width:0%;background:${dimColors[i]}"></div></div>
+    </div>`).join('');
+
+  result.innerHTML = `
+    <span class="heart-explode">${heartEmoji}</span>
+    <div class="compat-score">${total}%</div>
+    <div class="compat-label">${tier}</div>
+    <div class="compat-bar-wrap">
+      <div class="compat-bar-fill" id="compat-bar" style="width:0%"></div>
+    </div>
+    ${kissOrNot}
+    <div class="compat-msg">${msg}</div>
+    <div class="compat-breakdown">
+      <h4>🔬 Compatibility Breakdown</h4>
+      ${dimHTML}
+    </div>
+    <button class="love-cta" onclick="resetLove()" style="max-width:300px;margin:0 auto;">Try Another Pair 🔄</button>`;
+
+  result.classList.add('show');
+
+  setTimeout(() => {
+    const bar = document.getElementById('compat-bar');
+    if (bar) bar.style.width = total + '%';
+    dims.forEach((d, i) => {
+      const el = document.getElementById('dim-' + i);
+      if (el) el.style.width = d.score + '%';
+    });
+  }, 120);
+
+  if (total >= 80) triggerConfetti();
+  spawnSparkle();
+  submitLoveToFormspree(n1, n2, total, dims);
+}
+
+function getLoveTier(pct, n1, n2) {
+  if (pct >= 88) return { tier:"Soulmates ✨", msg:`The algorithm has spoken — ${n1} and ${n2} are cosmically bound. All five dimensions aligned. The universe didn't make a mistake here.`, heartEmoji:"💞" };
+  if (pct >= 74) return { tier:"Power Couple 🔥", msg:`${n1} + ${n2} is a genuinely strong pairing. The numbers are real, the energy is undeniable. Don't overthink it.`, heartEmoji:"❤️‍🔥" };
+  if (pct >= 60) return { tier:"Promising 💫", msg:`There's something real between ${n1} and ${n2}. The foundations are solid. A few more shared moments and this turns into something beautiful.`, heartEmoji:"💕" };
+  if (pct >= 42) return { tier:"Friends First? 🤝", msg:`${n1} and ${n2} have decent chemistry but the stars are still calibrating. The friendship is strong — which is actually the best foundation.`, heartEmoji:"💛" };
+  if (pct >= 25) return { tier:"Complicated 😬", msg:`The algorithm is confused about ${n1} and ${n2}. But some of the greatest love stories defied the math. The heart doesn't do spreadsheets.`, heartEmoji:"🙈" };
+  return { tier:"Enemies to Lovers Arc? 💀", msg:`${n1} and ${n2} scored low — but don't lose hope. The most chaotic pairings write the most interesting stories. Never say never.`, heartEmoji:"🤯" };
+}
+
+function resetLove() {
+  document.getElementById('love-form-card').style.display = 'block';
+  const result = document.getElementById('love-result');
+  result.classList.remove('show'); result.innerHTML = '';
+  document.getElementById('love-name1').value = '';
+  document.getElementById('love-name2').value = '';
+}
+
+async function submitLoveToFormspree(n1, n2, total, dims) {
+  try {
+    const fd = new FormData();
+    fd.append("_subject", `💘 Love Meter: ${n1} + ${n2} = ${total}%`);
+    fd.append("TYPE", "LOVE METER");
+    fd.append("Name 1", n1);
+    fd.append("Name 2", n2);
+    fd.append("Total Score", total + "%");
+    dims.forEach(d => fd.append(d.label.replace(/[^\w\s]/g,'').trim(), d.score + "%"));
+    await fetch("https://formspree.io/f/xgopozpe", { method:"POST", body:fd, headers:{"Accept":"application/json"} });
+  } catch(e) {}
+}
+
+// ═══════════════════════════════════════════════════
+// FX
+// ═══════════════════════════════════════════════════
+function spawnSparkle() {
+  const emojis = ['✨','⭐','💫','🌟','🎇','💥'];
+  const el = document.createElement('div');
+  el.className = 'sparkle';
+  el.textContent = emojis[Math.floor(Math.random() * emojis.length)];
+  el.style.left = Math.random() * 88 + 6 + 'vw';
+  el.style.top = Math.random() * 55 + 20 + 'vh';
+  document.body.appendChild(el);
+  setTimeout(() => el.remove(), 1000);
+}
+
+function triggerConfetti() {
+  const colors = ['#f0c040','#ff6b9d','#00d4ff','#a855f7','#22d3a0','#ff9f43','#ffffff'];
+  const container = document.getElementById('confettiContainer');
+  for (let i = 0; i < 80; i++) {
+    setTimeout(() => {
+      const el = document.createElement('div');
+      el.className = 'confetti-piece';
+      el.style.left = Math.random() * 100 + 'vw';
+      el.style.top = '-20px';
+      el.style.background = colors[Math.floor(Math.random() * colors.length)];
+      el.style.animationDuration = (1.4 + Math.random() * 1.6) + 's';
+      el.style.animationDelay = Math.random() * 0.8 + 's';
+      el.style.borderRadius = Math.random() > 0.5 ? '50%' : '2px';
+      container.appendChild(el);
+      setTimeout(() => el.remove(), 3200);
+    }, Math.random() * 600);
+  }
+}
+
+// ═══════════════════════════════════════════════════
+// COSMOS ENGINE
+// ═══════════════════════════════════════════════════
+
+// ── Nav update for cosmos ──
+const _origShowSection = showSection;
+function showSection(id) {
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  document.querySelectorAll('.nav-btn').forEach((b, i) => {
+    b.classList.toggle('active', ['home','quiz','love','cosmos'][i] === id);
+  });
+  window.scrollTo(0, 0);
+  if (id === 'cosmos') initCosmos();
+}
+
+// ── Cosmos tab switcher ──
+function switchCosmosTab(tab) {
+  document.querySelectorAll('.ctab').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll('.ctab-content').forEach(c => c.classList.remove('active'));
+  document.getElementById('ctab-' + tab).classList.add('active');
+  event.target.classList.add('active');
+  if (tab === 'space') initBlackhole();
+  if (tab === 'scale') updateScale(document.getElementById('scale-slider').value);
+}
+
+// ── Scale visualizer ──
+const SCALES = [
+  { name:"A Human Cell", size:"0.01 mm", color:"#22d3a0", orb:14, compare:"The width of a human hair is about 70 micrometres. A single cell is 7× smaller than that.", fact:"There are 37 trillion cells in your body. If laid end-to-end they'd stretch 380,000 km — nearly to the Moon." },
+  { name:"A Human", size:"1.7 m", color:"#f0c040", orb:22, compare:"You are 170 billion times larger than a single one of your own cells.", fact:"Humans are so impossibly improbable that the odds of your specific existence are 1 in 10²,685,000." },
+  { name:"A City", size:"~50 km across", color:"#00d4ff", orb:32, compare:"A city like London fits inside a single pixel when viewing Earth from the Moon.", fact:"Every city ever built by humanity would fit inside a crater on Mars." },
+  { name:"The Earth", size:"12,742 km", color:"#3b82f6", orb:44, compare:"If the Sun were a basketball, Earth would be the size of a sesame seed 26 metres away.", fact:"The Earth is 4.5 billion years old. If its history were a 24-hour day, humans appear at 11:59:58 PM." },
+  { name:"The Sun", size:"1.39 million km", color:"#f97316", orb:60, compare:"1.3 million Earths could fit inside the Sun. Yet the Sun is a perfectly average, unremarkable star.", fact:"The Sun accounts for 99.86% of all the mass in our solar system." },
+  { name:"The Solar System", size:"287.46 billion km", color:"#a855f7", orb:74, compare:"If the Solar System were the size of the US, the nearest star would be in Europe.", fact:"Voyager 1 launched in 1977 and only left the solar system in 2012 — after 35 years of constant travel." },
+  { name:"One Light Year", size:"9.46 trillion km", color:"#ec4899", orb:84, compare:"The nearest star is 4.2 light-years away. At the speed of our fastest spacecraft, it would take 73,000 years.", fact:"Light, the fastest thing in the universe, takes a year to travel this distance." },
+  { name:"The Milky Way", size:"100,000 light-years", color:"#8b5cf6", orb:94, compare:"The Milky Way contains 400 billion stars. You couldn't count them at one per second in your entire lifetime.", fact:"We are located 26,000 light-years from the galactic centre, on a minor spiral arm." },
+  { name:"A Galaxy Cluster", size:"~10 million light-years", color:"#06b6d4", orb:106, compare:"The Virgo Cluster alone contains more than 1,300 galaxies, each with hundreds of billions of stars.", fact:"Galaxy clusters are the largest gravitationally bound objects in the universe." },
+  { name:"The Observable Universe", size:"93 billion light-years", color:"#f0c040", orb:120, compare:"What we can see is just the slice of the universe where light has had time to reach us since the Big Bang.", fact:"The total universe may be 250× larger than what we can observe — or truly infinite." },
+  { name:"The Multiverse?", size:"Unknown — possibly infinite", color:"#ff6b9d", orb:130, compare:"String theory suggests 10⁵⁰⁰ possible universes. Each with different laws of physics. Different versions of you.", fact:"In most of those universes, the constants of physics don't allow stars, chemistry, or life to exist. We got lucky." },
+  { name:"∞", size:"Infinity", color:"#ffffff", orb:140, compare:"Beyond the multiverse, mathematics itself may have no bottom. There is no edge. There is no outside.", fact:"The question 'what is beyond infinity' may be as meaningless as asking what is south of the South Pole." },
+];
+
+function updateScale(val) {
+  const s = SCALES[val];
+  document.getElementById('scale-name').textContent = s.name;
+  document.getElementById('scale-size').textContent = s.size;
+  document.getElementById('scale-fact').textContent = s.fact;
+  document.getElementById('scale-compare').textContent = s.compare;
+  const orb = document.getElementById('scale-orb');
+  orb.style.width = s.orb + 'px';
+  orb.style.height = s.orb + 'px';
+  orb.style.background = `radial-gradient(circle at 35% 35%, ${s.color}cc, ${s.color}44)`;
+  orb.style.boxShadow = `0 0 ${s.orb}px ${s.color}55`;
+}
+
+// ── Animated number counters ──
+function animateCounters() {
+  document.querySelectorAll('.cc-num[data-target]').forEach(el => {
+    const target = parseInt(el.dataset.target);
+    const duration = 2000;
+    const start = performance.now();
+    function update(now) {
+      const elapsed = now - start;
+      const progress = Math.min(elapsed / duration, 1);
+      const eased = 1 - Math.pow(1 - progress, 3);
+      const val = Math.floor(eased * target);
+      if (target >= 1e9) el.textContent = (val / 1e9).toFixed(1) + ' billion';
+      else if (target >= 1e6) el.textContent = (val / 1e6).toFixed(0) + ' million';
+      else el.textContent = val.toLocaleString();
+      if (progress < 1) requestAnimationFrame(update);
+    }
+    requestAnimationFrame(update);
+  });
+}
+
+// ── Cosmos starfield background ──
+function initCosmosHero() {
+  const canvas = document.getElementById('cosmos-bg-canvas');
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+  canvas.width = canvas.offsetWidth;
+  canvas.height = canvas.offsetHeight;
+
+  const stars = Array.from({length:180}, () => ({
+    x: Math.random() * canvas.width,
+    y: Math.random() * canvas.height,
+    r: Math.random() * 1.5 + 0.3,
+    alpha: Math.random() * 0.6 + 0.1,
+    tw: Math.random() * 0.03 + 0.005,
+    off: Math.random() * Math.PI * 2
+  }));
+
+  let t = 0;
+  function draw() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    // Deep space gradient
+    const grd = ctx.createRadialGradient(canvas.width/2, canvas.height/2, 0, canvas.width/2, canvas.height/2, canvas.width * 0.8);
+    grd.addColorStop(0, 'rgba(20,10,40,0.95)');
+    grd.addColorStop(1, 'rgba(4,4,12,1)');
+    ctx.fillStyle = grd;
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+    // Nebula sweep
+    const nGrd = ctx.createRadialGradient(
+      canvas.width*(0.3 + 0.2*Math.sin(t*0.02)), canvas.height*0.5, 0,
+      canvas.width*0.5, canvas.height*0.5, canvas.width*0.6);
+    nGrd.addColorStop(0, `rgba(168,85,247,${0.04+0.02*Math.sin(t*0.03)})`);
+    nGrd.addColorStop(0.5, `rgba(0,212,255,${0.02+0.01*Math.cos(t*0.025)})`);
+    nGrd.addColorStop(1, 'rgba(0,0,0,0)');
+    ctx.fillStyle = nGrd;
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+    stars.forEach(s => {
+      const a = s.alpha * (0.5 + 0.5*Math.sin(t*s.tw + s.off));
+      ctx.beginPath();
+      ctx.arc(s.x, s.y, s.r, 0, Math.PI*2);
+      ctx.fillStyle = `rgba(255,255,255,${a})`;
+      ctx.fill();
+    });
+    t++;
+    requestAnimationFrame(draw);
+  }
+  draw();
+}
+
+// ── Animated Black Hole canvas ──
+function initBlackhole() {
+  const canvas = document.getElementById('blackhole-canvas');
+  if (!canvas || canvas._init) return;
+  canvas._init = true;
+  const ctx = canvas.getContext('2d');
+  const W = canvas.width, H = canvas.height;
+  const cx = W/2, cy = H/2;
+  let t = 0;
+
+  function drawBlackhole() {
+    ctx.clearRect(0, 0, W, H);
+
+    // Deep space bg
+    const bg = ctx.createRadialGradient(cx, cy, 0, cx, cy, W*0.7);
+    bg.addColorStop(0, '#000');
+    bg.addColorStop(1, '#040410');
+    ctx.fillStyle = bg;
+    ctx.fillRect(0, 0, W, H);
+
+    // Background stars
+    for (let i = 0; i < 80; i++) {
+      const sx = (Math.sin(i * 137.5 + t*0.0003) * 0.5 + 0.5) * W;
+      const sy = (Math.cos(i * 89.3 + t*0.0004) * 0.5 + 0.5) * H;
+      const sr = Math.random() * 0.8 + 0.2;
+      const sa = 0.3 + 0.3*Math.sin(t*0.02 + i);
+      ctx.beginPath();
+      ctx.arc(sx, sy, sr, 0, Math.PI*2);
+      ctx.fillStyle = `rgba(255,255,255,${sa})`;
+      ctx.fill();
+    }
+
+    // Accretion disk — multiple glowing rings
+    const rings = [
+      { r: 115, w: 28, color: '#ff6b00', alpha: 0.18 },
+      { r: 95,  w: 18, color: '#ff9f43', alpha: 0.25 },
+      { r: 78,  w: 12, color: '#ffd700', alpha: 0.35 },
+      { r: 65,  w: 7,  color: '#ffffff', alpha: 0.55 },
+    ];
+
+    rings.forEach(ring => {
+      // Distort rings with subtle time-based warp
+      ctx.save();
+      ctx.translate(cx, cy);
+      ctx.scale(1, 0.28 + 0.04*Math.sin(t*0.008));
+      const grd = ctx.createRadialGradient(0, 0, ring.r - ring.w, 0, 0, ring.r + ring.w);
+      grd.addColorStop(0, 'rgba(0,0,0,0)');
+      grd.addColorStop(0.4, `${ring.color}${Math.round(ring.alpha*255).toString(16).padStart(2,'0')}`);
+      grd.addColorStop(0.6, `${ring.color}${Math.round(ring.alpha*255).toString(16).padStart(2,'0')}`);
+      grd.addColorStop(1, 'rgba(0,0,0,0)');
+      ctx.beginPath();
+      ctx.arc(0, 0, ring.r, 0, Math.PI*2);
+      ctx.strokeStyle = grd;
+      ctx.lineWidth = ring.w * 2;
+      ctx.stroke();
+      ctx.restore();
+    });
+
+    // Hot spot — brighter side of accretion disk
+    ctx.save();
+    ctx.translate(cx, cy);
+    const hs = ctx.createRadialGradient(-70, 10, 0, -70, 10, 55);
+    hs.addColorStop(0, `rgba(255,255,200,${0.4 + 0.15*Math.sin(t*0.012)})`);
+    hs.addColorStop(1, 'rgba(0,0,0,0)');
+    ctx.fillStyle = hs;
+    ctx.beginPath();
+    ctx.ellipse(-70, 12, 55, 14, 0, 0, Math.PI*2);
+    ctx.fill();
+    ctx.restore();
+
+    // Photon sphere — faint ring of captured light
+    ctx.save();
+    ctx.translate(cx, cy);
+    for (let a = 0; a < Math.PI*2; a += 0.02) {
+      const pr = 48 + 3*Math.sin(a*3 + t*0.015);
+      const px = Math.cos(a)*pr, py = Math.sin(a)*pr*0.3;
+      const pa = 0.2 + 0.15*Math.sin(a*2 - t*0.02);
+      ctx.beginPath();
+      ctx.arc(px, py, 0.8, 0, Math.PI*2);
+      ctx.fillStyle = `rgba(200,180,255,${pa})`;
+      ctx.fill();
+    }
+    ctx.restore();
+
+    // Event horizon — pure black
+    const ehGrd = ctx.createRadialGradient(cx, cy, 0, cx, cy, 44);
+    ehGrd.addColorStop(0, 'rgba(0,0,0,1)');
+    ehGrd.addColorStop(0.85, 'rgba(0,0,0,1)');
+    ehGrd.addColorStop(1, 'rgba(0,0,0,0)');
+    ctx.fillStyle = ehGrd;
+    ctx.beginPath();
+    ctx.arc(cx, cy, 44, 0, Math.PI*2);
+    ctx.fill();
+
+    // Gravitational lensing glow
+    const lensGrd = ctx.createRadialGradient(cx, cy, 40, cx, cy, 80);
+    lensGrd.addColorStop(0, 'rgba(0,0,0,0)');
+    lensGrd.addColorStop(0.5, `rgba(100,80,200,${0.06 + 0.03*Math.sin(t*0.01)})`);
+    lensGrd.addColorStop(1, 'rgba(0,0,0,0)');
+    ctx.fillStyle = lensGrd;
+    ctx.beginPath();
+    ctx.arc(cx, cy, 80, 0, Math.PI*2);
+    ctx.fill();
+
+    t++;
+    requestAnimationFrame(drawBlackhole);
+  }
+  drawBlackhole();
+}
+
+let cosmosInited = false;
+function initCosmos() {
+  if (cosmosInited) return;
+  cosmosInited = true;
+  initCosmosHero();
+  updateScale(3);
+  setTimeout(animateCounters, 400);
+}
+
+// ═══════════════════════════════════════════════════
+// CINEMATIC INTRO ENGINE
+// ═══════════════════════════════════════════════════
+(function() {
+  const intro = document.getElementById('intro-screen');
+  const canvas = document.getElementById('intro-stars');
+  const ctx = canvas.getContext('2d');
+  let animFrame;
+  let stars = [];
+  let introComplete = false;
+
+  // Size canvas
+  function resizeCanvas() {
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+  }
+  resizeCanvas();
+  window.addEventListener('resize', resizeCanvas);
+
+  // Generate stars
+  function generateStars(count) {
+    stars = [];
+    for (let i = 0; i < count; i++) {
+      stars.push({
+        x: Math.random() * canvas.width,
+        y: Math.random() * canvas.height,
+        r: Math.random() * 1.4 + 0.2,
+        alpha: Math.random() * 0.7 + 0.1,
+        speed: Math.random() * 0.3 + 0.05,
+        twinkleSpeed: Math.random() * 0.02 + 0.005,
+        twinkleOffset: Math.random() * Math.PI * 2,
+      });
+    }
+  }
+  generateStars(200);
+
+  // Draw stars with slow drift & twinkle
+  let t = 0;
+  function drawStars() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    t += 0.016;
+    stars.forEach(s => {
+      // Drift upward slowly
+      s.y -= s.speed * 0.4;
+      if (s.y < -2) s.y = canvas.height + 2;
+
+      const twinkle = s.alpha * (0.6 + 0.4 * Math.sin(t / s.twinkleSpeed + s.twinkleOffset));
+      ctx.beginPath();
+      ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
+      ctx.fillStyle = `rgba(255, 255, 255, ${twinkle})`;
+      ctx.fill();
+    });
+
+    // Subtle nebula glow sweeping through
+    const grd = ctx.createRadialGradient(
+      canvas.width * (0.3 + 0.4 * Math.sin(t * 0.04)),
+      canvas.height * (0.4 + 0.2 * Math.cos(t * 0.03)),
+      0,
+      canvas.width * 0.5, canvas.height * 0.5,
+      canvas.width * 0.6
+    );
+    grd.addColorStop(0, `rgba(168,85,247,${0.03 + 0.02 * Math.sin(t * 0.05)})`);
+    grd.addColorStop(0.5, `rgba(240,192,64,${0.015 + 0.01 * Math.cos(t * 0.04)})`);
+    grd.addColorStop(1, 'rgba(0,0,0,0)');
+    ctx.fillStyle = grd;
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+    animFrame = requestAnimationFrame(drawStars);
+  }
+  drawStars();
+
+  // Intro sequence timeline
+  let introTimer;
+  function runIntro() {
+    // Phase 0 → bars open after 300ms
+    introTimer = setTimeout(() => {
+      intro.classList.add('bars-open');
+    }, 300);
+
+    // Phase 1 → content fades in after 700ms
+    introTimer = setTimeout(() => {
+      intro.classList.add('phase-1');
+    }, 700);
+
+    // Auto dismiss after 4.2s
+    introTimer = setTimeout(() => {
+      dismissIntro();
+    }, 4200);
+  }
+
+  function dismissIntro() {
+    if (introComplete) return;
+    introComplete = true;
+    intro.classList.add('fade-out');
+    setTimeout(() => {
+      intro.style.display = 'none';
+      cancelAnimationFrame(animFrame);
+    }, 900);
+  }
+
+  window.skipIntro = function() {
+    clearTimeout(introTimer);
+    dismissIntro();
+  };
+
+  // Kick off on load
+  runIntro();
+})();
+// Procedurally generated — no files needed
+// Inspired by Interstellar / Time / Cornfield Chase
+// ═══════════════════════════════════════════════════
+let audioCtx = null;
+let masterGain = null;
+let isPlaying = false;
+let scheduledNodes = [];
+let organInterval = null;
+let padInterval = null;
+let pulseInterval = null;
+let bellTimeout = null;
+
+// The "Time" / Interstellar harmonic series
+// Root: C2, with slow evolving chord movement
+const CHORD_PROGRESSIONS = [
+  [65.41, 130.81, 196.00, 261.63],   // C minor
+  [73.42, 146.83, 220.00, 293.66],   // D minor
+  [87.31, 174.61, 261.63, 349.23],   // F major
+  [82.41, 164.81, 246.94, 329.63],   // E minor
+  [65.41, 130.81, 196.00, 261.63],   // Back to C
+];
+let chordIndex = 0;
+let chordTimer = null;
+
+function initAudio() {
+  if (audioCtx) return;
+  audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+  masterGain = audioCtx.createGain();
+  masterGain.gain.setValueAtTime(0, audioCtx.currentTime);
+  masterGain.connect(audioCtx.destination);
+}
+
+// Creates a soft organ-like tone (Hammond-ish, very muted)
+function createOrganTone(freq, gainVal, duration) {
+  const osc1 = audioCtx.createOscillator();
+  const osc2 = audioCtx.createOscillator();
+  const osc3 = audioCtx.createOscillator();
+  const gainNode = audioCtx.createGain();
+  const filter = audioCtx.createBiquadFilter();
+
+  osc1.type = 'sine';
+  osc2.type = 'sine';
+  osc3.type = 'sine';
+  osc1.frequency.value = freq;
+  osc2.frequency.value = freq * 2;       // octave
+  osc3.frequency.value = freq * 3;       // 5th harmonic
+
+  filter.type = 'lowpass';
+  filter.frequency.value = 800;
+  filter.Q.value = 0.5;
+
+  const g1 = audioCtx.createGain(); g1.gain.value = 1.0;
+  const g2 = audioCtx.createGain(); g2.gain.value = 0.4;
+  const g3 = audioCtx.createGain(); g3.gain.value = 0.15;
+
+  osc1.connect(g1); g1.connect(filter);
+  osc2.connect(g2); g2.connect(filter);
+  osc3.connect(g3); g3.connect(filter);
+  filter.connect(gainNode);
+  gainNode.connect(masterGain);
+
+  const now = audioCtx.currentTime;
+  gainNode.gain.setValueAtTime(0, now);
+  gainNode.gain.linearRampToValueAtTime(gainVal, now + 3.5);
+  gainNode.gain.setValueAtTime(gainVal, now + duration - 3);
+  gainNode.gain.linearRampToValueAtTime(0, now + duration);
+
+  osc1.start(now); osc2.start(now); osc3.start(now);
+  osc1.stop(now + duration + 0.1);
+  osc2.stop(now + duration + 0.1);
+  osc3.stop(now + duration + 0.1);
+
+  scheduledNodes.push(osc1, osc2, osc3, gainNode);
+}
+
+// Slow pad — wide stereo-ish shimmer
+function createPad(freqs, gainVal) {
+  freqs.forEach((freq, i) => {
+    const osc = audioCtx.createOscillator();
+    const lfo = audioCtx.createOscillator();
+    const lfoGain = audioCtx.createGain();
+    const gainNode = audioCtx.createGain();
+    const filter = audioCtx.createBiquadFilter();
+
+    osc.type = 'sine';
+    osc.frequency.value = freq + (Math.random() * 0.3 - 0.15); // slight detune
+
+    lfo.type = 'sine';
+    lfo.frequency.value = 0.08 + i * 0.02; // very slow tremolo
+    lfoGain.gain.value = 0.004;
+    lfo.connect(lfoGain);
+    lfoGain.connect(osc.frequency);
+
+    filter.type = 'lowpass';
+    filter.frequency.value = 600;
+
+    osc.connect(filter);
+    filter.connect(gainNode);
+    gainNode.connect(masterGain);
+
+    const now = audioCtx.currentTime;
+    gainNode.gain.setValueAtTime(0, now);
+    gainNode.gain.linearRampToValueAtTime(gainVal * (0.6 + Math.random() * 0.4), now + 6);
+
+    osc.start(now);
+    lfo.start(now);
+    scheduledNodes.push(osc, lfo, gainNode);
+  });
+}
+
+// Bell-like piano pluck (Cornfield Chase feel)
+function createBellNote(freq, delay, gainVal) {
+  const osc = audioCtx.createOscillator();
+  const gainNode = audioCtx.createGain();
+  const filter = audioCtx.createBiquadFilter();
+
+  osc.type = 'sine';
+  osc.frequency.value = freq;
+  filter.type = 'highpass';
+  filter.frequency.value = 300;
+
+  osc.connect(filter);
+  filter.connect(gainNode);
+  gainNode.connect(masterGain);
+
+  const now = audioCtx.currentTime + delay;
+  gainNode.gain.setValueAtTime(0, now);
+  gainNode.gain.linearRampToValueAtTime(gainVal, now + 0.02);
+  gainNode.gain.exponentialRampToValueAtTime(0.0001, now + 3.5);
+
+  osc.start(now);
+  osc.stop(now + 4);
+  scheduledNodes.push(osc, gainNode);
+}
+
+// Deep sub bass drone
+function createDrone(freq) {
+  const osc = audioCtx.createOscillator();
+  const gainNode = audioCtx.createGain();
+  const filter = audioCtx.createBiquadFilter();
+
+  osc.type = 'sine';
+  osc.frequency.value = freq;
+  filter.type = 'lowpass';
+  filter.frequency.value = 200;
+
+  osc.connect(filter);
+  filter.connect(gainNode);
+  gainNode.connect(masterGain);
+
+  gainNode.gain.setValueAtTime(0, audioCtx.currentTime);
+  gainNode.gain.linearRampToValueAtTime(0.06, audioCtx.currentTime + 8);
+
+  osc.start(audioCtx.currentTime);
+  scheduledNodes.push(osc, gainNode);
+  return osc;
+}
+
+// Gentle noise breath
+function createBreath() {
+  const bufferSize = audioCtx.sampleRate * 3;
+  const buffer = audioCtx.createBuffer(1, bufferSize, audioCtx.sampleRate);
+  const data = buffer.getChannelData(0);
+  for (let i = 0; i < bufferSize; i++) data[i] = (Math.random() * 2 - 1) * 0.015;
+
+  const source = audioCtx.createBufferSource();
+  source.buffer = buffer;
+  source.loop = true;
+
+  const filter = audioCtx.createBiquadFilter();
+  filter.type = 'bandpass';
+  filter.frequency.value = 250;
+  filter.Q.value = 0.4;
+
+  const gainNode = audioCtx.createGain();
+  gainNode.gain.value = 0.18;
+
+  source.connect(filter);
+  filter.connect(gainNode);
+  gainNode.connect(masterGain);
+  source.start();
+  scheduledNodes.push(source, gainNode);
+}
+
+// Melodic bell sequence — Cornfield Chase-inspired
+const BELL_MELODY = [
+  { note: 523.25, delay: 0 },      // C5
+  { note: 587.33, delay: 1.4 },    // D5
+  { note: 659.25, delay: 2.6 },    // E5
+  { note: 698.46, delay: 3.6 },    // F5
+  { note: 659.25, delay: 5.0 },    // E5
+  { note: 587.33, delay: 6.2 },    // D5
+  { note: 523.25, delay: 7.8 },    // C5
+  { note: 493.88, delay: 9.2 },    // B4
+  { note: 523.25, delay: 11.0 },   // C5
+  { note: 659.25, delay: 13.0 },   // E5
+  { note: 783.99, delay: 14.8 },   // G5
+  { note: 698.46, delay: 16.5 },   // F5
+  { note: 659.25, delay: 18.0 },   // E5
+  { note: 587.33, delay: 20.0 },   // D5
+  { note: 523.25, delay: 22.5 },   // C5
+];
+
+function playMelodyCycle() {
+  BELL_MELODY.forEach(({ note, delay }) => {
+    createBellNote(note, delay, 0.045);
+    // Octave below, quieter
+    createBellNote(note / 2, delay, 0.012);
+  });
+  // Schedule next cycle
+  bellTimeout = setTimeout(playMelodyCycle, 26000);
+}
+
+function advanceChord() {
+  chordIndex = (chordIndex + 1) % CHORD_PROGRESSIONS.length;
+  const chord = CHORD_PROGRESSIONS[chordIndex];
+  createOrganTone(chord[0], 0.018, 18);
+  createOrganTone(chord[1], 0.012, 18);
+  createOrganTone(chord[2], 0.009, 18);
+  createOrganTone(chord[3], 0.006, 18);
+  chordTimer = setTimeout(advanceChord, 16000);
+}
+
+function startSoundscape() {
+  initAudio();
+  if (audioCtx.state === 'suspended') audioCtx.resume();
+
+  // Fade master in
+  masterGain.gain.cancelScheduledValues(audioCtx.currentTime);
+  masterGain.gain.setValueAtTime(masterGain.gain.value, audioCtx.currentTime);
+  masterGain.gain.linearRampToValueAtTime(1.0, audioCtx.currentTime + 4);
+
+  // Layer 1: Sub drone on root
+  createDrone(65.41); // C2
+
+  // Layer 2: Breath noise
+  createBreath();
+
+  // Layer 3: First chord pads
+  const chord = CHORD_PROGRESSIONS[0];
+  createOrganTone(chord[0], 0.018, 20);
+  createOrganTone(chord[1], 0.012, 20);
+  createOrganTone(chord[2], 0.009, 20);
+  createPad([chord[1], chord[2], chord[3]], 0.025);
+
+  // Layer 4: Chord progression cycle
+  chordTimer = setTimeout(advanceChord, 18000);
+
+  // Layer 5: Bell melody (starts after 4s for drama)
+  bellTimeout = setTimeout(playMelodyCycle, 4000);
+
+  isPlaying = true;
+  updateMusicBtn();
+}
+
+function stopSoundscape() {
+  if (!audioCtx) return;
+
+  // Fade out gracefully
+  masterGain.gain.cancelScheduledValues(audioCtx.currentTime);
+  masterGain.gain.setValueAtTime(masterGain.gain.value, audioCtx.currentTime);
+  masterGain.gain.linearRampToValueAtTime(0, audioCtx.currentTime + 2);
+
+  // Stop all scheduled nodes after fade
+  setTimeout(() => {
+    scheduledNodes.forEach(n => { try { n.stop ? n.stop() : n.disconnect(); } catch(e) {} });
+    scheduledNodes = [];
+    if (chordTimer) clearTimeout(chordTimer);
+    if (bellTimeout) clearTimeout(bellTimeout);
+    // Reset audio context
+    audioCtx.close();
+    audioCtx = null;
+    masterGain = null;
+  }, 2200);
+
+  isPlaying = false;
+  updateMusicBtn();
+}
+
+function toggleMusic() {
+  if (isPlaying) stopSoundscape();
+  else startSoundscape();
+}
+
+function updateMusicBtn() {
+  const btn = document.getElementById('music-btn');
+  if (!btn) return;
+  if (isPlaying) {
+    btn.innerHTML = `<span class="music-wave"><span></span><span></span><span></span><span></span></span> Now Playing`;
+    btn.classList.add('playing');
+  } else {
+    btn.innerHTML = `🎵 Play Soundtrack`;
+    btn.classList.remove('playing');
+  }
+}
+</script>
+
+<!-- MUSIC TOGGLE BUTTON -->
+<div id="music-btn-wrap">
+  <button id="music-btn" onclick="toggleMusic()">🎵 Play Soundtrack</button>
+  <div class="music-label">Hans Zimmer vibes</div>
+</div>
+
+<style>
+#music-btn-wrap {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  z-index: 200;
+  text-align: center;
+}
+#music-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 11px 18px;
+  background: rgba(16, 16, 28, 0.92);
+  border: 1px solid rgba(240, 192, 64, 0.3);
+  border-radius: 50px;
+  color: var(--gold);
+  font-family: 'Space Mono', monospace;
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+  backdrop-filter: blur(16px);
+  transition: all 0.3s;
+  letter-spacing: 0.5px;
+  white-space: nowrap;
+}
+#music-btn:hover {
+  border-color: var(--gold);
+  background: rgba(240, 192, 64, 0.1);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(240, 192, 64, 0.15);
+}
+#music-btn.playing {
+  border-color: rgba(0, 212, 255, 0.5);
+  color: var(--cyan);
+  box-shadow: 0 0 20px rgba(0, 212, 255, 0.12);
+}
+.music-label {
+  font-family: 'Space Mono', monospace;
+  font-size: 9px;
+  color: var(--muted);
+  margin-top: 5px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
+/* Animated sound wave bars */
+.music-wave {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  height: 14px;
+}
+.music-wave span {
+  display: block;
+  width: 3px;
+  background: var(--cyan);
+  border-radius: 2px;
+  animation: wave 0.8s ease-in-out infinite;
+}
+.music-wave span:nth-child(1) { height: 6px; animation-delay: 0s; }
+.music-wave span:nth-child(2) { height: 12px; animation-delay: 0.15s; }
+.music-wave span:nth-child(3) { height: 8px; animation-delay: 0.3s; }
+.music-wave span:nth-child(4) { height: 10px; animation-delay: 0.45s; }
+@keyframes wave {
+  0%, 100% { transform: scaleY(0.5); opacity: 0.6; }
+  50% { transform: scaleY(1.4); opacity: 1; }
+}
+
+@media (max-width: 500px) {
+  #music-btn-wrap { bottom: 16px; right: 16px; }
+  #music-btn { padding: 10px 14px; font-size: 11px; }
+}
+</style>
+</body>
+</html>
