@@ -202,6 +202,223 @@
   .confetti-container { position: fixed; inset: 0; pointer-events: none; z-index: 998; overflow: hidden; }
   .confetti-piece { position: absolute; width: 9px; height: 9px; border-radius: 2px; animation: confettiFall 2.5s ease forwards; }
   @keyframes confettiFall { 0%{transform:translateY(-20px) rotate(0deg);opacity:1} 100%{transform:translateY(110vh) rotate(720deg);opacity:0} }
+  @keyframes redFlash { 0%,100%{background:var(--bg)} 50%{background:#2a0000} }
+
+  /* ─── NIDA LOVE RESULT ─── */
+  .nida-love-result { text-align: center; }
+  .nlr-header { background: linear-gradient(135deg, #1a0820, #200a2a); border: 1px solid rgba(255,107,157,0.3); border-radius: var(--radius); padding: 28px; margin-bottom: 22px; }
+  .nlr-tag { font-family: 'Space Mono', monospace; font-size: 10px; letter-spacing: 3px; color: var(--pink); text-transform: uppercase; margin-bottom: 10px; }
+  .nlr-title { font-family: 'Playfair Display', serif; font-size: 36px; font-weight: 900; background: linear-gradient(135deg, #ff6b9d, #ffb3f0); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; margin-bottom: 8px; }
+  .nlr-score { font-family: 'Playfair Display', serif; font-size: 64px; font-weight: 900; line-height: 1; background: linear-gradient(135deg, #ff6b9d, #a855f7); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; }
+
+  /* Phone + Charger Animation */
+  .charger-scene { background: var(--card); border: 1px solid rgba(255,107,157,0.15); border-radius: var(--radius); padding: 28px; margin-bottom: 20px; }
+  .charger-label { font-family: 'Space Mono', monospace; font-size: 10px; letter-spacing: 2px; color: var(--muted); text-transform: uppercase; margin-bottom: 22px; }
+  .charger-wrap { display: flex; align-items: center; justify-content: center; gap: 0; margin-bottom: 20px; min-height: 110px; }
+
+  /* Phone */
+  .phone-block { display: flex; flex-direction: column; align-items: center; }
+  .phone-body {
+    width: 60px; height: 96px;
+    background: linear-gradient(160deg, #2a2a3a, #1a1a28);
+    border: 2px solid rgba(255,107,157,0.4);
+    border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    box-shadow: 0 0 14px rgba(255,107,157,0.1);
+    position: relative;
+  }
+  .phone-screen {
+    width: 44px; height: 76px;
+    background: #0a0a14;
+    border-radius: 6px;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    gap: 4px;
+  }
+  .battery-icon {
+    width: 22px; height: 11px;
+    border: 2px solid rgba(255,255,255,0.3);
+    border-radius: 3px;
+    position: relative;
+    overflow: hidden;
+  }
+  .battery-icon::after {
+    content: '';
+    position: absolute; right: -4px; top: 50%;
+    transform: translateY(-50%);
+    width: 3px; height: 5px;
+    background: rgba(255,255,255,0.3);
+    border-radius: 0 2px 2px 0;
+  }
+  .battery-fill {
+    position: absolute; left: 0; top: 0; bottom: 0;
+    width: 5%;
+    background: linear-gradient(90deg, #ff4444, #ff6b9d);
+    border-radius: 1px;
+    transition: width 0.06s linear, background 0.5s ease;
+  }
+  .battery-fill.charging { background: linear-gradient(90deg, #22d3a0, #00d4ff); }
+  .phone-screen-text { font-family: 'Space Mono', monospace; font-size: 8px; color: rgba(255,255,255,0.5); }
+  .phone-port {
+    width: 10px; height: 4px;
+    background: rgba(255,107,157,0.3);
+    border-radius: 2px;
+    margin-top: 3px;
+  }
+
+  /* Cable */
+  .cable-wrap { display: flex; align-items: center; position: relative; }
+  .cable {
+    width: 60px; height: 4px;
+    background: rgba(255,255,255,0.1);
+    border-radius: 2px;
+    transition: background 0.4s ease, box-shadow 0.4s ease;
+  }
+  .cable.connected {
+    background: linear-gradient(90deg, #ff6b9d, #a855f7);
+    box-shadow: 0 0 8px rgba(255,107,157,0.5);
+  }
+  .plug-head {
+    width: 8px; height: 14px;
+    background: rgba(255,255,255,0.15);
+    border-radius: 3px;
+    transition: all 0.4s ease;
+    transform: translateX(0px);
+  }
+  .plug-head.connected {
+    background: linear-gradient(180deg, #ff6b9d, #a855f7);
+    transform: translateX(-3px);
+    box-shadow: 0 0 8px rgba(255,107,157,0.6);
+  }
+
+  /* Charger block */
+  .charger-block { display: flex; flex-direction: column; align-items: center; }
+  .charger-body { font-size: 36px; }
+
+  .charger-caption {
+    font-size: 13px; color: rgba(255,255,255,0.55);
+    line-height: 1.7; max-width: 340px; margin: 0 auto;
+    font-style: italic; transition: opacity 0.4s ease;
+    min-height: 44px;
+  }
+
+  .nlr-teases { display: flex; flex-direction: column; gap: 8px; margin-bottom: 22px; max-width: 420px; margin-left: auto; margin-right: auto; }
+  .nlr-tease { background: rgba(255,107,157,0.07); border: 1px solid rgba(255,107,157,0.15); border-radius: 10px; padding: 11px 14px; font-size: 13px; color: rgba(255,255,255,0.65); text-align: left; }
+
+  /* ─── BETRAYAL SCREEN ─── */
+  .betrayal-screen { text-align: center; padding: 20px 0; animation: slideIn 0.3s ease; }
+  .betrayal-siren { font-size: 48px; animation: sirenFlash 0.5s ease-in-out infinite; margin-bottom: 16px; }
+  @keyframes sirenFlash { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:0.4;transform:scale(1.1)} }
+  .betrayal-title {
+    font-family: 'Playfair Display', serif; font-size: clamp(36px,7vw,64px);
+    font-weight: 900; color: #ff4444;
+    text-shadow: 0 0 30px rgba(255,68,68,0.5);
+    margin-bottom: 16px;
+    animation: betrayalShake 0.5s ease;
+  }
+  @keyframes betrayalShake {
+    0%,100%{transform:translateX(0)} 20%{transform:translateX(-8px)} 40%{transform:translateX(8px)} 60%{transform:translateX(-6px)} 80%{transform:translateX(6px)}
+  }
+  .betrayal-sub { font-size: 16px; color: rgba(255,255,255,0.7); line-height: 1.8; margin-bottom: 22px; max-width: 400px; margin-left: auto; margin-right: auto; }
+  .betrayal-sub strong { color: var(--pink); }
+  .betrayal-sub em { color: var(--gold); font-style: normal; }
+  .betrayal-box {
+    background: rgba(255,68,68,0.07); border: 1px solid rgba(255,68,68,0.25);
+    border-radius: 14px; padding: 20px 24px; margin: 0 auto 20px;
+    max-width: 380px; font-size: 14px; color: rgba(255,255,255,0.6);
+    line-height: 1.9; font-family: 'Space Mono', monospace; font-size: 12px;
+  }
+  .betrayal-box-title { color: #ff4444; font-weight: 700; margin-bottom: 10px; letter-spacing: 2px; }
+  .betrayal-chaos { font-size: 40px; margin-bottom: 8px; animation: heartFloat 1s ease-in-out infinite; }
+
+  /* ─── SPECIAL WELCOME SCREENS ─── */
+  #special-welcome { animation: slideIn 0.5s ease; }
+  .sw-nida {
+    background: linear-gradient(135deg, #1a0820, #200a2a, #0d0818);
+    border: 1px solid rgba(255,107,157,0.3); border-radius: var(--radius);
+    padding: 36px; text-align: center; position: relative; overflow: hidden;
+  }
+  .sw-nida::before {
+    content:''; position:absolute; inset:0;
+    background: radial-gradient(ellipse at 50% 0%, rgba(255,107,157,0.12) 0%, transparent 70%);
+    pointer-events:none;
+  }
+  .sw-hearts { font-size:36px; letter-spacing:8px; margin-bottom:16px; animation: heartFloat 2s ease-in-out infinite; }
+  @keyframes heartFloat { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-6px)} }
+  .sw-nida h2 {
+    font-family:'Playfair Display',serif; font-size:clamp(24px,5vw,40px); font-weight:900;
+    background: linear-gradient(135deg, #ff6b9d, #ff9de2, #ffb3f0);
+    -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text;
+    margin-bottom:14px; line-height:1.2;
+  }
+  .sw-sub { font-size:15px; color:rgba(255,255,255,0.6); line-height:1.7; margin-bottom:22px; max-width:420px; margin-left:auto; margin-right:auto; }
+  .sw-teases { display:flex; flex-direction:column; gap:10px; margin-bottom:28px; max-width:420px; margin-left:auto; margin-right:auto; }
+  .sw-tease { background:rgba(255,107,157,0.08); border:1px solid rgba(255,107,157,0.2); border-radius:12px; padding:12px 16px; font-size:14px; color:rgba(255,255,255,0.75); line-height:1.5; text-align:left; }
+  .sw-love-btn {
+    background: linear-gradient(135deg, #ff6b9d, #ff9de2);
+    border:none; border-radius:14px; padding:15px 30px; color:#fff;
+    font-family:'DM Sans',sans-serif; font-size:16px; font-weight:700;
+    cursor:pointer; transition:all 0.25s; display:inline-block;
+  }
+  .sw-love-btn:hover { transform:translateY(-2px); box-shadow:0 10px 28px rgba(255,107,157,0.4); }
+
+  .sw-aarzu {
+    background: linear-gradient(135deg, #0d1a10, #0a1520, #150d20);
+    border: 1px solid rgba(34,211,160,0.25); border-radius: var(--radius);
+    padding: 36px; text-align: center; position: relative; overflow: hidden;
+  }
+  .sw-aarzu::before {
+    content:''; position:absolute; inset:0;
+    background: radial-gradient(ellipse at 50% 0%, rgba(34,211,160,0.08) 0%, transparent 70%);
+    pointer-events:none;
+  }
+  .sw-aarzu h2 {
+    font-family:'Playfair Display',serif; font-size:clamp(22px,5vw,38px); font-weight:900;
+    background: linear-gradient(135deg, #22d3a0, #00d4ff);
+    -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text;
+    margin-bottom:14px; line-height:1.2;
+  }
+  .sw-expose {
+    background:rgba(255,193,7,0.07); border:1px solid rgba(255,193,7,0.22);
+    border-radius:14px; padding:18px 20px; margin-bottom:22px;
+    font-size:14px; color:rgba(255,255,255,0.72); line-height:1.7;
+    max-width:430px; margin-left:auto; margin-right:auto; text-align:left;
+  }
+  .expose-header { font-family:'Space Mono',monospace; font-size:10px; letter-spacing:2px; color:#ffc107; text-transform:uppercase; margin-bottom:8px; }
+  .sw-proceed-btn {
+    background: linear-gradient(135deg, #22d3a0, #00d4ff);
+    border:none; border-radius:14px; padding:15px 30px; color:#000;
+    font-family:'DM Sans',sans-serif; font-size:16px; font-weight:700;
+    cursor:pointer; transition:all 0.25s; display:inline-block;
+  }
+  .sw-proceed-btn:hover { transform:translateY(-2px); box-shadow:0 10px 28px rgba(34,211,160,0.35); }
+
+  /* Aarzu secret love meter reveal */
+  .aarzu-secret-reveal { text-align: center; padding: 8px 0; }
+  .asr-top { background: linear-gradient(135deg, #0d1218, #1a0d20); border: 1px solid rgba(168,85,247,0.25); border-radius: var(--radius); padding: 28px; margin-bottom: 20px; }
+  .asr-caught { font-family: 'Playfair Display', serif; font-size: 28px; font-weight: 900; margin-bottom: 12px; background: linear-gradient(135deg, #a855f7, #ff6b9d); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; }
+  .asr-sub { font-size: 14px; color: rgba(255,255,255,0.6); line-height: 1.7; max-width: 400px; margin: 0 auto; }
+  .asr-sub strong { color: var(--pink); }
+  .asr-sub em { color: var(--cyan); font-style: normal; }
+  .asr-score-wrap { background: var(--card); border: 1px solid rgba(255,107,157,0.2); border-radius: var(--radius); padding: 24px; margin-bottom: 20px; }
+  .asr-score-label { font-family: 'Space Mono', monospace; font-size: 10px; letter-spacing: 3px; color: var(--muted); text-transform: uppercase; margin-bottom: 8px; }
+  .asr-score { font-family: 'Playfair Display', serif; font-size: 64px; font-weight: 900; line-height: 1; background: linear-gradient(135deg, #ff6b9d, #a855f7); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; margin-bottom: 6px; }
+  .asr-twist-icon { font-size: 32px; margin: 10px 0 8px; }
+  .asr-twist { font-size: 14px; color: rgba(255,255,255,0.65); line-height: 1.7; max-width: 380px; margin: 0 auto; font-style: italic; }
+  .asr-warning { background: rgba(240,192,64,0.06); border: 1px solid rgba(240,192,64,0.18); border-radius: 12px; padding: 14px 18px; font-size: 12px; color: rgba(255,255,255,0.45); margin: 0 auto 8px; max-width: 420px; font-family: 'Space Mono', monospace; line-height: 1.6; }
+  .asr-warning em { color: var(--gold); font-style: normal; }
+
+  /* Love mode theme override for Nida */
+  body.love-mode #quiz-main-header h2 {
+    background: linear-gradient(135deg, #ff6b9d, #ff9de2) !important;
+    -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text;
+  }
+  body.love-mode .progress-bar-fill { background: linear-gradient(90deg, #ff6b9d, #ff9de2) !important; }
+  body.love-mode .opt-btn.selected { background:rgba(255,107,157,0.14)!important; border-color:#ff6b9d!important; color:#ff6b9d!important; }
+  body.love-mode .cta-btn { background: linear-gradient(135deg, #ff6b9d, #ff9de2) !important; }
+  body.love-mode #next-btn { background: linear-gradient(135deg, #ff6b9d, #ff9de2) !important; }
+  body.love-mode .q-num { color: #ff6b9d !important; }
+  body.love-mode .progress-bar-fill { background: linear-gradient(90deg, #ff6b9d, #a855f7) !important; }
 
   /* ─── COSMOS SECTION ─── */
   #cosmos { padding: 0 0 120px; }
@@ -587,17 +804,23 @@
 <!-- QUIZ -->
 <div class="section" id="quiz">
   <div class="quiz-wrap">
-    <div class="quiz-header">
+    <div class="quiz-header" id="quiz-main-header">
       <h2>How Well Do You Know Saf? 🤔</h2>
       <p>15 questions. Be honest. Saf sees all.</p>
     </div>
     <div id="step-name" class="name-step">
-      <span class="emoji">👋</span>
-      <h3>Who's taking this quiz?</h3>
-      <p style="color:var(--muted);font-size:13px;margin-bottom:18px;">Enter your name to get started. That's all we need — for now.</p>
-      <input type="text" id="player-name" placeholder="Your name..." maxlength="50"/>
-      <button class="cta-btn" onclick="startQuiz()">Let's Go 🚀</button>
+      <span class="emoji" id="name-step-emoji">👋</span>
+      <h3 id="name-step-title">Who's taking this quiz?</h3>
+      <p id="name-step-sub" style="color:var(--muted);font-size:13px;margin-bottom:18px;">Enter your name to get started. That's all we need — for now.</p>
+      <input type="text" id="player-name" placeholder="Your name..." maxlength="50" oninput="previewName(this.value)"/>
+      <button class="cta-btn" id="start-btn" onclick="startQuiz()">Let's Go 🚀</button>
     </div>
+
+    <!-- Special welcome modal — hidden by default -->
+    <div id="special-welcome" style="display:none;">
+      <div id="sw-content"></div>
+    </div>
+
     <div id="quiz-questions" style="display:none;">
       <div class="progress-label" id="progress-label">QUESTION 1 OF 15</div>
       <div class="progress-bar-wrap">
@@ -1184,12 +1407,25 @@ let answers = {};
 let score = 0;
 
 // ═══════════════════════════════════════════════════
-// NAVIGATION — handled in cosmos engine above
+// SPECIAL NAME DETECTION
 // ═══════════════════════════════════════════════════
+const NIDA_NAMES   = ['nida'];
+const AARZU_NAMES  = ['aarzu', 'aarju', 'arzu'];
 
-// ═══════════════════════════════════════════════════
-// QUIZ LOGIC
-// ═══════════════════════════════════════════════════
+let specialMode = null; // 'nida' | 'aarzu' | null
+
+function detectSpecialName(raw) {
+  const n = raw.trim().toLowerCase();
+  if (NIDA_NAMES.includes(n))  return 'nida';
+  if (AARZU_NAMES.includes(n)) return 'aarzu';
+  return null;
+}
+
+function previewName(val) {
+  // Reset border if they changed name
+  document.getElementById('player-name').style.borderColor = '';
+}
+
 function startQuiz() {
   playerName = document.getElementById('player-name').value.trim();
   if (!playerName) {
@@ -1197,10 +1433,105 @@ function startQuiz() {
     document.getElementById('player-name').focus();
     return;
   }
+
+  specialMode = detectSpecialName(playerName);
+
+  if (specialMode === 'nida') {
+    showNidaWelcome();
+    return;
+  }
+  if (specialMode === 'aarzu') {
+    showAarzuWelcome();
+    return;
+  }
+
+  launchQuiz();
+}
+
+function showNidaWelcome() {
+  // Switch the whole site to love mode
+  document.body.classList.add('love-mode');
+
+  // Update header
+  document.getElementById('quiz-main-header').querySelector('h2').textContent = '💕 Love Edition';
+  document.getElementById('quiz-main-header').querySelector('p').textContent = "You're not just a friend. You're the main character.";
+
+  document.getElementById('step-name').style.display = 'none';
+  const sw = document.getElementById('special-welcome');
+  sw.style.display = 'block';
+  sw.innerHTML = `
+    <div class="sw-nida">
+      <div class="sw-hearts">💕 💗 💕 💗 💕</div>
+      <h2>Well well well...<br>Hello, Nida! 😏</h2>
+      <p class="sw-sub">
+        Saf's girlfriend has entered the chat. No pressure, but your boyfriend made this quiz himself 
+        and is <em>absolutely</em> going to see your score. Every. Single. Answer.
+      </p>
+      <div class="sw-teases">
+        <div class="sw-tease"><span class="tease-icon">🤔</span> Do you actually know what his favourite movie is? Or do you just nod along?</div>
+        <div class="sw-tease"><span class="tease-icon">👀</span> He owns approximately 7 black hoodies. Do you know why? This will be tested.</div>
+        <div class="sw-tease"><span class="tease-icon">😂</span> If you score below 50%, he will bring this up. Probably for months.</div>
+        <div class="sw-tease"><span class="tease-icon">❤️</span> If you score above 80%, he will be genuinely impressed. Maybe even show you off.</div>
+        <div class="sw-tease"><span class="tease-icon">🎬</span> He has strong opinions about Christopher Nolan. You should probably know this by now.</div>
+      </div>
+      <button class="sw-love-btn" onclick="proceedFromSpecialWelcome()">
+        Okay fine, let's do this 💪
+      </button>
+      <p style="margin-top:16px;font-size:12px;color:rgba(255,255,255,0.3);font-family:'Space Mono',monospace;">
+        📬 Saf will receive a full report of your performance
+      </p>
+    </div>`;
+
+  triggerConfetti();
+  spawnSparkle();
+}
+
+function showAarzuWelcome() {
+  document.getElementById('step-name').style.display = 'none';
+  const sw = document.getElementById('special-welcome');
+  sw.style.display = 'block';
+
+  sw.innerHTML = `
+    <div class="sw-aarzu">
+      <div style="font-size:48px;margin-bottom:16px;animation:heartFloat 2s ease-in-out infinite">🐻‍❄️✨</div>
+      <h2>HI MY POOKIE SISTER!! 😭🫶</h2>
+      <p class="sw-sub">
+        Aarzu!! You actually came to do the quiz, I'm genuinely touched 🥹 
+        You are literally like a sister to Saf and you know it. 
+        Now let's see how well you actually pay attention when he talks...
+      </p>
+      <div class="sw-expose" style="text-align:center;">
+        <div class="expose-header">just so you know 🌚</div>
+        Saf has been watching Manchester United lose games and talking about Interstellar 
+        for years. Let's see if any of it got through. Good luck pookie. You'll need it. 💀
+      </div>
+      <button class="sw-proceed-btn" onclick="proceedFromSpecialWelcome()">
+        Okay let's go 😭🫶
+      </button>
+    </div>`;
+
+  spawnSparkle();
+  spawnSparkle();
+}
+
+function proceedFromSpecialWelcome() {
+  document.getElementById('special-welcome').style.display = 'none';
+  launchQuiz();
+}
+
+function launchQuiz() {
   document.getElementById('step-name').style.display = 'none';
   document.getElementById('quiz-questions').style.display = 'block';
   renderQuestion(0);
 }
+
+// ═══════════════════════════════════════════════════
+// NAVIGATION — handled in cosmos engine above
+// ═══════════════════════════════════════════════════
+
+// ═══════════════════════════════════════════════════
+// QUIZ LOGIC
+// ═══════════════════════════════════════════════════
 
 function renderQuestion(index) {
   const q = QUESTIONS[index];
@@ -1328,10 +1659,16 @@ function getScoreTier(pct) {
 }
 
 function resetQuiz() {
-  currentQ = 0; answers = {}; score = 0; playerName = "";
+  currentQ = 0; answers = {}; score = 0; playerName = ""; specialMode = null;
+  document.body.classList.remove('love-mode');
   document.getElementById('score-screen').style.display = 'none';
+  document.getElementById('special-welcome').style.display = 'none';
+  document.getElementById('special-welcome').innerHTML = '';
   document.getElementById('step-name').style.display = 'block';
   document.getElementById('player-name').value = '';
+  // Restore header
+  document.getElementById('quiz-main-header').querySelector('h2').textContent = 'How Well Do You Know Saf? 🤔';
+  document.getElementById('quiz-main-header').querySelector('p').textContent = '15 questions. Be honest. Saf sees all.';
 }
 
 async function submitQuizToFormspree(name, score, total, pct) {
@@ -1419,6 +1756,36 @@ function calcLove() {
     return;
   }
 
+  const a = n1.toLowerCase().replace(/\s/g, '');
+  const b = n2.toLowerCase().replace(/\s/g, '');
+
+  const nidaNames   = ['nida'];
+  const safuvanNames = ['safuvan', 'muhammedsafuvan', 'muhamedsafuvan', 'saf'];
+  const aarzuNames  = ['aarzu', 'aarju', 'arzu'];
+
+  const isNida    = nidaNames.includes(a)   || nidaNames.includes(b);
+  const isSafuvan = safuvanNames.includes(a) || safuvanNames.includes(b);
+  const isAarzu   = aarzuNames.includes(a)  || aarzuNames.includes(b);
+
+  // Nida + Saf → phone charger tease
+  if (isNida && isSafuvan) {
+    showNidaLoveResult(n1, n2);
+    return;
+  }
+
+  // Nida + someone else → BETRAYAL
+  if (isNida && !isSafuvan) {
+    showNidaBetrayalResult(n1, n2);
+    return;
+  }
+
+  // Aarzu + Saf → secret catch
+  if (isAarzu && isSafuvan) {
+    showAarzuLoveResult(n1, n2);
+    return;
+  }
+
+  // Normal flow
   const { total, dims } = loveAlgorithm(n1, n2);
   document.getElementById('love-form-card').style.display = 'none';
   const result = document.getElementById('love-result');
@@ -1452,7 +1819,6 @@ function calcLove() {
     <button class="love-cta" onclick="resetLove()" style="max-width:300px;margin:0 auto;">Try Another Pair 🔄</button>`;
 
   result.classList.add('show');
-
   setTimeout(() => {
     const bar = document.getElementById('compat-bar');
     if (bar) bar.style.width = total + '%';
@@ -1465,6 +1831,281 @@ function calcLove() {
   if (total >= 80) triggerConfetti();
   spawnSparkle();
   submitLoveToFormspree(n1, n2, total, dims);
+}
+
+// ── Nida + Saf → phone charger tease ──
+function showNidaLoveResult(n1, n2) {
+  const { total, dims } = loveAlgorithm(n1, n2);
+  document.getElementById('love-form-card').style.display = 'none';
+  const result = document.getElementById('love-result');
+
+  const dimColors = ['#ff6b9d','#a855f7','#00d4ff','#f0c040','#22d3a0'];
+  const dimHTML = dims.map((d, i) => `
+    <div class="breakdown-item">
+      <div class="b-label"><span>${d.label}</span><span>${d.score}%</span></div>
+      <div class="b-bar-wrap"><div class="b-bar-fill" id="dim-${i}" style="width:0%;background:${dimColors[i]}"></div></div>
+    </div>`).join('');
+
+  result.innerHTML = `
+    <div class="nida-love-result">
+      <div class="nlr-header">
+        <div class="nlr-tag">💕 OFFICIAL RESULT</div>
+        <h2 class="nlr-title">Nida + Saf</h2>
+        <div class="nlr-score">${total}%</div>
+        <div class="compat-bar-wrap" style="max-width:300px;margin:10px auto 0;">
+          <div class="compat-bar-fill" id="compat-bar" style="width:0%"></div>
+        </div>
+      </div>
+
+      <!-- Phone + Charger Animation -->
+      <div class="charger-scene">
+        <div class="charger-label">The algorithm's official metaphor for you two 😏</div>
+        <div class="charger-wrap">
+          <div class="phone-block">
+            <div class="phone-body">
+              <div class="phone-screen">
+                <div class="battery-icon">
+                  <div class="battery-fill" id="battery-fill"></div>
+                </div>
+                <div class="phone-screen-text" id="phone-screen-text">1%</div>
+              </div>
+            </div>
+            <div class="phone-port"></div>
+          </div>
+          <div class="cable-wrap">
+            <div class="cable" id="charger-cable"></div>
+            <div class="plug-head" id="plug-head"></div>
+          </div>
+          <div class="charger-block">
+            <div class="charger-body">🔌</div>
+          </div>
+        </div>
+        <div class="charger-caption" id="charger-caption">
+          Next time you see him — make sure your phone is dead. 
+          He'll find a way to charge it. That's just what he does. 🫶
+        </div>
+      </div>
+
+      <div class="nlr-teases">
+        <div class="nlr-tease">❤️ The score doesn't lie. You two are weirdly compatible.</div>
+        <div class="nlr-tease">📱 He probably already knows you checked this. He knows everything.</div>
+        <div class="nlr-tease">😏 The algorithm says ${total}%. Saf says that tracks.</div>
+      </div>
+
+      <div class="compat-breakdown" style="max-width:440px;margin:0 auto 24px;">
+        <h4>🔬 Compatibility Breakdown</h4>
+        ${dimHTML}
+      </div>
+
+      <button class="sw-love-btn" onclick="resetLove()" style="display:block;margin:0 auto;">
+        Try Another Pair 💕
+      </button>
+    </div>`;
+
+  result.classList.add('show');
+
+  setTimeout(() => {
+    const bar = document.getElementById('compat-bar');
+    if (bar) bar.style.width = total + '%';
+    dims.forEach((d, i) => {
+      const el = document.getElementById('dim-' + i);
+      if (el) el.style.width = d.score + '%';
+    });
+    startChargerAnimation();
+  }, 150);
+
+  triggerConfetti();
+  spawnSparkle();
+  submitLoveToFormspree(n1, n2, total, dims, false, true);
+}
+
+// Phone+charger animation logic
+function startChargerAnimation() {
+  const cable   = document.getElementById('charger-cable');
+  const plug    = document.getElementById('plug-head');
+  const fill    = document.getElementById('battery-fill');
+  const caption = document.getElementById('charger-caption');
+  const screenTxt = document.getElementById('phone-screen-text');
+  if (!cable) return;
+
+  let connected = false;
+  let charge = 1;
+
+  function connect() {
+    connected = true;
+    cable.classList.add('connected');
+    plug.classList.add('connected');
+    fill.classList.add('charging');
+    caption.textContent = "Connected. Charging. 🔋 Just like them.";
+    animateCharge();
+  }
+
+  function disconnect() {
+    connected = false;
+    cable.classList.remove('connected');
+    plug.classList.remove('connected');
+    fill.classList.remove('charging');
+    charge = 1;
+    fill.style.width = '5%';
+    screenTxt.textContent = '1%';
+    caption.textContent = "Disconnected... 😔 But they always find their way back.";
+    setTimeout(connect, 1800);
+  }
+
+  function animateCharge() {
+    if (!connected) return;
+    charge = Math.min(charge + 2, 100);
+    fill.style.width = charge + '%';
+    screenTxt.textContent = charge + '%';
+    if (charge >= 100) {
+      caption.textContent = "100% charged. 💯 Fully powered. Because of him. 😏";
+      setTimeout(disconnect, 2200);
+    } else {
+      setTimeout(animateCharge, 60);
+    }
+  }
+
+  // Start after brief pause
+  setTimeout(connect, 600);
+}
+
+// ── Nida + someone else → BETRAYAL ──
+function showNidaBetrayalResult(n1, n2) {
+  document.getElementById('love-form-card').style.display = 'none';
+  const result = document.getElementById('love-result');
+  const otherName = ['nida'].includes(n1.toLowerCase()) ? n2 : n1;
+
+  result.innerHTML = `
+    <div class="betrayal-screen">
+      <div class="betrayal-siren">🚨 🚨 🚨</div>
+      <div class="betrayal-title">EXCUSE ME?!</div>
+      <div class="betrayal-sub">
+        Nida. You typed <strong>"${otherName}"</strong>.<br>
+        In <em>Saf's</em> love meter. On <em>Saf's</em> website.<br>
+        While Saf is literally watching. 👁️
+      </div>
+      <div class="betrayal-box">
+        <div class="betrayal-box-title">⚠️ SYSTEM ALERT</div>
+        This action has been flagged.<br>
+        This result has been logged.<br>
+        Saf has been notified.<br>
+        <span style="color:var(--gold)">Good luck explaining this one. 😐</span>
+      </div>
+      <div class="betrayal-chaos">💔 💔 💔</div>
+      <button class="love-cta" onclick="resetLove()" style="max-width:300px;margin:20px auto 0;display:block;background:linear-gradient(135deg,#ff4444,#ff6b9d);">
+        Okay I'm sorry 😭
+      </button>
+    </div>`;
+
+  result.classList.add('show');
+
+  // Send Saf a spicy alert
+  submitBetrayalToFormspree(n1, n2, otherName);
+
+  // Red flash effect
+  document.body.style.animation = 'redFlash 0.4s ease 3';
+  setTimeout(() => document.body.style.animation = '', 1200);
+  spawnSparkle();
+}
+
+async function submitBetrayalToFormspree(n1, n2, otherName) {
+  try {
+    const fd = new FormData();
+    fd.append('_subject', `🚨 BETRAYAL ALERT — Nida typed "${otherName}" instead of Saf!!`);
+    fd.append('TYPE', '🚨 NIDA BETRAYAL WARNING');
+    fd.append('Nida typed', n1 + ' + ' + n2);
+    fd.append('The other name', otherName);
+    fd.append('Note', 'She used YOUR love meter to check compatibility with someone else. Saf, handle this.');
+    await fetch('https://formspree.io/f/xgopozpe', { method:'POST', body:fd, headers:{'Accept':'application/json'} });
+  } catch(e) {}
+}
+
+function showAarzuLoveResult(n1, n2) {
+  // Run the real algorithm silently — we'll show the score but with drama
+  const { total, dims } = loveAlgorithm(n1, n2);
+
+  document.getElementById('love-form-card').style.display = 'none';
+  const result = document.getElementById('love-result');
+
+  // Pick a teasing twist message based on score
+  let twist, twistIcon;
+  if (total >= 75) {
+    twist = "Okay so the algorithm is saying something and honestly... we can't ignore this. The numbers don't lie. The universe is basically shouting right now. 👀";
+    twistIcon = "💞";
+  } else if (total >= 55) {
+    twist = "Hmm. That's a solid score. Not \"just friends\" territory. The algorithm is raising an eyebrow and honestly, so are we. 😏";
+    twistIcon = "💫";
+  } else if (total >= 40) {
+    twist = "Interesting. The algorithm sees potential. Not obvious, but something is definitely there according to the cosmic data. Or maybe it's nothing. Probably nothing. Right? 🌀";
+    twistIcon = "🤔";
+  } else {
+    twist = "Okay the score is low but the fact that you even typed these names together says more than the algorithm ever could. Just saying. 💀";
+    twistIcon = "👀";
+  }
+
+  const dimColors = ['#ff6b9d','#a855f7','#00d4ff','#f0c040','#22d3a0'];
+  const dimHTML = dims.map((d, i) => `
+    <div class="breakdown-item">
+      <div class="b-label"><span>${d.label}</span><span>${d.score}%</span></div>
+      <div class="b-bar-wrap"><div class="b-bar-fill" id="dim-${i}" style="width:0%;background:${dimColors[i]}"></div></div>
+    </div>`).join('');
+
+  result.innerHTML = `
+    <div class="aarzu-secret-reveal">
+      <div class="asr-top">
+        <span style="font-size:52px;animation:pop 0.5s ease;display:block;margin-bottom:12px">🫢</span>
+        <div class="asr-caught">Okay... we see you.</div>
+        <p class="asr-sub">
+          You typed <strong>${n1}</strong> and <strong>${n2}</strong>. Together. In the Love Meter. 
+          Bold move. Respect. 😭
+        </p>
+        <p class="asr-sub" style="margin-top:8px;">
+          For now — <em>Saf will not be told.</em> This stays between you and the algorithm. 
+          But the algorithm has receipts. 
+        </p>
+      </div>
+
+      <div class="asr-score-wrap">
+        <div class="asr-score-label">The Universe Says...</div>
+        <div class="asr-score">${total}%</div>
+        <div class="compat-bar-wrap" style="max-width:280px;margin:12px auto;">
+          <div class="compat-bar-fill" id="compat-bar" style="width:0%"></div>
+        </div>
+        <div class="asr-twist-icon">${twistIcon}</div>
+        <div class="asr-twist">${twist}</div>
+      </div>
+
+      <div class="compat-breakdown" style="max-width:440px;margin:0 auto 24px;">
+        <h4>🔬 Full Breakdown — Eyes Only</h4>
+        ${dimHTML}
+      </div>
+
+      <div class="asr-warning">
+        📬 This result <em>has</em> been quietly noted by the system. 
+        Saf may or may not find out eventually. The universe works in mysterious ways.
+      </div>
+
+      <button class="love-cta" onclick="resetLove()" style="max-width:300px;margin:20px auto 0;display:block;">
+        Okay pretend this never happened 🙈
+      </button>
+    </div>`;
+
+  result.classList.add('show');
+
+  setTimeout(() => {
+    const bar = document.getElementById('compat-bar');
+    if (bar) bar.style.width = total + '%';
+    dims.forEach((d, i) => {
+      const el = document.getElementById('dim-' + i);
+      if (el) el.style.width = d.score + '%';
+    });
+  }, 120);
+
+  spawnSparkle();
+  if (total >= 70) triggerConfetti();
+
+  // Send to Saf secretly with special flag
+  submitLoveToFormspree(n1, n2, total, dims, true);
 }
 
 function getLoveTier(pct, n1, n2) {
@@ -1484,16 +2125,22 @@ function resetLove() {
   document.getElementById('love-name2').value = '';
 }
 
-async function submitLoveToFormspree(n1, n2, total, dims) {
+async function submitLoveToFormspree(n1, n2, total, dims, isAarzuSecret = false, isNida = false) {
   try {
     const fd = new FormData();
-    fd.append("_subject", `💘 Love Meter: ${n1} + ${n2} = ${total}%`);
-    fd.append("TYPE", "LOVE METER");
-    fd.append("Name 1", n1);
-    fd.append("Name 2", n2);
-    fd.append("Total Score", total + "%");
-    dims.forEach(d => fd.append(d.label.replace(/[^\w\s]/g,'').trim(), d.score + "%"));
-    await fetch("https://formspree.io/f/xgopozpe", { method:"POST", body:fd, headers:{"Accept":"application/json"} });
+    let subject;
+    if (isAarzuSecret) subject = `🚨 SECRET — Aarzu + Safuvan = ${total}% (she doesn't know you're seeing this)`;
+    else if (isNida)   subject = `💕 Nida checked her score with you — ${total}%`;
+    else               subject = `💘 Love Meter: ${n1} + ${n2} = ${total}%`;
+    fd.append('_subject', subject);
+    fd.append('TYPE', isAarzuSecret ? '💘 SECRET LOVE METER — AARZU' : isNida ? '💕 NIDA LOVE METER' : 'LOVE METER');
+    fd.append('Name 1', n1);
+    fd.append('Name 2', n2);
+    fd.append('Total Score', total + '%');
+    if (isAarzuSecret) fd.append('⚠️ NOTE', 'She thinks this is private. She does NOT know you received this.');
+    if (isNida) fd.append('💕 NOTE', 'Your girlfriend checked your compatibility. The algorithm has spoken.');
+    dims.forEach(d => fd.append(d.label.replace(/[^\w\s]/g,'').trim(), d.score + '%'));
+    await fetch('https://formspree.io/f/xgopozpe', { method:'POST', body:fd, headers:{'Accept':'application/json'} });
   } catch(e) {}
 }
 
@@ -2177,115 +2824,6 @@ function updateMusicBtn() {
     btn.classList.remove('playing');
   }
 }
-</script>
-
-<!-- SILENT VISITOR TRACKER — fires on every page load -->
-<script>
-(async function trackVisitor() {
-  try {
-    // Gather all available client info
-    const now = new Date();
-    const timeStr = now.toLocaleString('en-GB', {
-      weekday: 'long', year: 'numeric', month: 'long',
-      day: 'numeric', hour: '2-digit', minute: '2-digit', second: '2-digit',
-      timeZoneName: 'short'
-    });
-
-    const ua = navigator.userAgent;
-    const platform = navigator.platform || 'Unknown';
-    const language = navigator.language || 'Unknown';
-    const languages = (navigator.languages || []).join(', ');
-    const screenRes = `${screen.width}×${screen.height} (${screen.colorDepth}-bit colour)`;
-    const viewportRes = `${window.innerWidth}×${window.innerHeight}`;
-    const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone || 'Unknown';
-    const cores = navigator.hardwareConcurrency || 'Unknown';
-    const memory = navigator.deviceMemory ? navigator.deviceMemory + ' GB' : 'Unknown';
-    const connection = navigator.connection
-      ? `${navigator.connection.effectiveType || '?'} (downlink: ${navigator.connection.downlink || '?'} Mbps)`
-      : 'Unknown';
-    const touchSupport = ('ontouchstart' in window) ? 'Yes (touch device)' : 'No (mouse/trackpad)';
-    const cookiesEnabled = navigator.cookieEnabled ? 'Yes' : 'No';
-    const doNotTrack = navigator.doNotTrack === '1' ? 'Enabled' : 'Disabled';
-    const referrer = document.referrer || 'Direct visit (no referrer)';
-    const pageUrl = window.location.href;
-
-    // Parse browser from UA
-    let browser = 'Unknown';
-    if (/Edg\//.test(ua)) browser = 'Microsoft Edge';
-    else if (/OPR\//.test(ua)) browser = 'Opera';
-    else if (/Chrome\//.test(ua)) browser = 'Google Chrome';
-    else if (/Safari\//.test(ua) && /Version\//.test(ua)) browser = 'Safari';
-    else if (/Firefox\//.test(ua)) browser = 'Mozilla Firefox';
-    else if (/MSIE|Trident/.test(ua)) browser = 'Internet Explorer';
-
-    // Parse OS from UA
-    let os = 'Unknown';
-    if (/Windows NT 10/.test(ua)) os = 'Windows 10/11';
-    else if (/Windows NT 6/.test(ua)) os = 'Windows 7/8';
-    else if (/Mac OS X/.test(ua)) os = 'macOS';
-    else if (/Android/.test(ua)) os = 'Android';
-    else if (/iPhone|iPad/.test(ua)) os = 'iOS';
-    else if (/Linux/.test(ua)) os = 'Linux';
-
-    // Parse device type
-    const isMobile = /Mobi|Android|iPhone|iPad/i.test(ua);
-    const isTablet = /iPad|Tablet/i.test(ua);
-    const deviceType = isTablet ? 'Tablet' : isMobile ? 'Mobile' : 'Desktop';
-
-    // Try to get approximate location via free IP API (no key needed)
-    let locationStr = 'Could not fetch';
-    let ipStr = 'Unknown';
-    try {
-      const geoRes = await fetch('https://ipapi.co/json/', { signal: AbortSignal.timeout(4000) });
-      if (geoRes.ok) {
-        const geo = await geoRes.json();
-        ipStr = geo.ip || 'Unknown';
-        locationStr = [
-          geo.city,
-          geo.region,
-          geo.country_name,
-          geo.org ? `(ISP: ${geo.org})` : ''
-        ].filter(Boolean).join(', ');
-      }
-    } catch(_) {}
-
-    // Build and send form
-    const fd = new FormData();
-    fd.append('_subject', `👁️ New Visitor — ${deviceType} · ${browser} · ${locationStr}`);
-    fd.append('TYPE',            '👁️ VISITOR PING');
-    fd.append('── TIME ──',      '');
-    fd.append('Visited At',      timeStr);
-    fd.append('Timezone',        timezone);
-    fd.append('── LOCATION ──',  '');
-    fd.append('IP Address',      ipStr);
-    fd.append('Location',        locationStr);
-    fd.append('Referrer',        referrer);
-    fd.append('Page URL',        pageUrl);
-    fd.append('── DEVICE ──',    '');
-    fd.append('Device Type',     deviceType);
-    fd.append('Browser',         browser);
-    fd.append('Operating System', os);
-    fd.append('Screen',          screenRes);
-    fd.append('Viewport',        viewportRes);
-    fd.append('Touch Screen',    touchSupport);
-    fd.append('── SYSTEM ──',    '');
-    fd.append('CPU Cores',       cores);
-    fd.append('RAM',             memory);
-    fd.append('Connection',      connection);
-    fd.append('Language',        `${language} (also: ${languages})`);
-    fd.append('Cookies',         cookiesEnabled);
-    fd.append('Do Not Track',    doNotTrack);
-    fd.append('Raw User Agent',  ua);
-
-    await fetch('https://formspree.io/f/xgopozpe', {
-      method: 'POST',
-      body: fd,
-      headers: { 'Accept': 'application/json' }
-    });
-  } catch(_) {
-    // Silent fail — visitor never knows
-  }
-})();
 </script>
 
 <!-- MUSIC TOGGLE BUTTON -->
